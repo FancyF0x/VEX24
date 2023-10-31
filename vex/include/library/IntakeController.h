@@ -7,7 +7,7 @@ class Intake {
 
 public:
   enum rotation_units { deg, rad };
-  Intake(pros::Motor &motor1, rotation_units &unit);
+  Intake(pros::Motor motor1, rotation_units& unit);
 
   void turnIntake(double degrees, float power);
   void turnIntake(float power);

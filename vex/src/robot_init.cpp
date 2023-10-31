@@ -4,13 +4,13 @@
 
 pros::Controller master = pros::Controller(pros::E_CONTROLLER_MASTER);
 
-pros::Motor rightMotor1 = pros::Motor(RIGHT_MOTOR_1_PORT, true);
+pros::Motor rightMotor1 = pros::Motor(RIGHT_MOTOR_1_PORT);
 pros::Motor rightMotor2 = pros::Motor(RIGHT_MOTOR_2_PORT, true);
-pros::Motor rightMotor3 = pros::Motor(RIGHT_MOTOR_3_PORT, true);
+pros::Motor rightMotor3 = pros::Motor(RIGHT_MOTOR_3_PORT);
 pros::Motor rightMotor4 = pros::Motor(RIGHT_MOTOR_4_PORT, true);
 
-pros::Motor leftMotor1 = pros::Motor(LEFT_MOTOR_1_PORT);
-pros::Motor leftMotor2 = pros::Motor(LEFT_MOTOR_2_PORT);
+pros::Motor leftMotor1 = pros::Motor(LEFT_MOTOR_1_PORT, true);
+pros::Motor leftMotor2 = pros::Motor(LEFT_MOTOR_2_PORT, true);
 pros::Motor leftMotor3 = pros::Motor(LEFT_MOTOR_3_PORT);
 pros::Motor leftMotor4 = pros::Motor(LEFT_MOTOR_4_PORT);
 
