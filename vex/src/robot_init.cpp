@@ -1,5 +1,8 @@
 //initialize robot components here
+#include "pros/misc.h"
 #include "robot.h"
+
+pros::Controller master = pros::Controller(pros::E_CONTROLLER_MASTER);
 
 pros::Motor rightMotor1 = pros::Motor(RIGHT_MOTOR_1_PORT, true);
 pros::Motor rightMotor2 = pros::Motor(RIGHT_MOTOR_2_PORT, true);

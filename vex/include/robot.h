@@ -23,7 +23,7 @@
 
 #define INERTIAL_PORT 6
 
-extern pros::Controller master(pros::E_CONTROLLER_MASTER);
+extern pros::Controller master;
 
 extern pros::Motor rightMotor1;
 extern pros::Motor rightMotor2;
