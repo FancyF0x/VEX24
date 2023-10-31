@@ -11,6 +11,7 @@ public:
            pros::IMU &rotation_sensor);
 
   void turnCatapult(double degrees, float power);
+  void turnCatapult(float power);
 
 private:
   pros::MotorGroup *motorGroup;
