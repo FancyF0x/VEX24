@@ -1,8 +1,9 @@
-//define robot ports here
+// define robot ports here
 #pragma once
 
 #include "api.h"
 #include "library/ChassisController.h"
+#include "pros/misc.h"
 
 #define RIGHT_MOTOR_1_PORT 1
 #define RIGHT_MOTOR_2_PORT 3
@@ -20,7 +21,9 @@
 
 #define INTAKE_PORT 12
 
-#define INERTIAL_PORT          6
+#define INERTIAL_PORT 6
+
+extern pros::Controller master(pros::E_CONTROLLER_MASTER);
 
 extern pros::Motor rightMotor1;
 extern pros::Motor rightMotor2;

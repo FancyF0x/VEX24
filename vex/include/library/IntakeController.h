@@ -10,6 +10,7 @@ public:
   Intake(pros::Motor &motor1, rotation_units &unit);
 
   void turnIntake(double degrees, float power);
+  void turnIntake(float power);
 
 private:
   pros::Motor *motor;
