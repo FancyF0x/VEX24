@@ -25,4 +25,4 @@ pros::Rotation cataSensor = pros::Rotation(CATA_ROT_SENSE_PORT);
 
 pros::Motor IntakeMotor = pros::Motor(INTAKE_PORT);
 
-pros::Imu gyro = pros::Imu(INERTIAL_PORT);
+pros::Imu imu = pros::Imu(INERTIAL_PORT);
