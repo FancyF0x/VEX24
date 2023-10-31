@@ -51,7 +51,35 @@ Chassis::Chassis(pros::Motor_Group& left, pros::Motor_Group& right, pros::Imu& g
     Chassis::turnPid = turnPid;
 }
 
-void Chassis::Move(double distance, float speed_m, float slewrate) {
+void Chassis::DriveArcade(double drive, double turn, float turn_expo, float drive_expo) {
+     //apply expo for turning
+     turn /= 127;
+     bool negative = turn<0;
+     turn = pow(turn, turn_expo);
+
+     if(turn>0 && negative)
+        turn*=-1;
+
+    turn *= 127;
+
+    //apply expo for driving
+    drive /= 127;
+    negative = drive<0;
+    drive = pow(drive, drive_expo);
+
+     if(drive>0 && negative)
+        drive*=-1;
+
+    drive *= 127;
+
+    int rightSpeed = int(drive-turn);
+    int leftSpeed = int(drive+turn);
+
+    right->move(rightSpeed);
+    left->move(leftSpeed);
+}
+
+void Chassis::MovePid(double distance, float speed_m, float slewrate) {
     resetMotors();
 
     double slew=0;
@@ -97,7 +125,7 @@ void Chassis::Move(double distance, int speed, float slewrate) {
     left->brake();
 }
 
-void Chassis::Turn(int degrees, float speed_m) {
+void Chassis::TurnPid(int degrees, float speed_m) {
     gyro->tare_rotation();
 
     while(std::abs(degrees - gyro->get_rotation()) > 3) {

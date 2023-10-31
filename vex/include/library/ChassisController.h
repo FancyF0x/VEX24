@@ -18,11 +18,13 @@ class Chassis {
 
         //TODO: use odometers to drive
 
-        void Move(double distance, float speed_m, float slewrate=-1); //with pid
-        void Move(double distance, int speed, float slewrate=-1);     //without pid
+        void DriveArcade(double drive, double turn, float turn_expo=1, float drive_expo=1);
 
-        void Turn(int degrees, float speed_m);                       //with pid
-        void Turn(int degrees, int speed);                           //without pid
+        void MovePid(double distance, float speed_m, float slewrate=-1); //with pid
+        void Move(double distance, int speed, float slewrate=-1);        //without pid
+
+        void TurnPid(int degrees, float speed_m);                        //with pid
+        void Turn(int degrees, int speed);                               //without pid
 
         double getAverageRightPosition(bool rawEncoder);
         double getAverageLeftPosition(bool rawEncoder);
