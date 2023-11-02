@@ -19,7 +19,7 @@ pros::Motor_Group rightMotors = pros::Motor_Group({rightMotor1, rightMotor2, rig
 
 pros::Motor cata1 = pros::Motor(CATA_ONE_PORT);
 pros::Motor cata2 = pros::Motor(CATA_TWO_PORT, true);
-pros::Motor_Group cata = pros::Motor_Group({cata1,cata2});
+pros::Motor_Group cata_motors = pros::Motor_Group({cata1,cata2});
 
 pros::Rotation cataSensor = pros::Rotation(CATA_ROT_SENSE_PORT);
 

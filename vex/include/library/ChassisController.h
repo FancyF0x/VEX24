@@ -19,6 +19,7 @@ class Chassis {
         //TODO: use odometers to drive
 
         void DriveArcade(double drive, double turn, float turn_expo=1, float drive_expo=1);
+        void DriveTank(double left, double right);
 
         void MovePid(double distance, float speed_m, float slewrate=-1); //with pid
         void Move(double distance, int speed, float slewrate=-1);        //without pid

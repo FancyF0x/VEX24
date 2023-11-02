@@ -79,6 +79,11 @@ void Chassis::DriveArcade(double drive, double turn, float turn_expo, float driv
     left->move(leftSpeed);
 }
 
+void Chassis::DriveTank(double left, double right) {
+    Chassis::right->move(right);
+    Chassis::left->move(left);
+}
+
 void Chassis::MovePid(double distance, float speed_m, float slewrate) {
     resetMotors();
 
