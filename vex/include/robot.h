@@ -3,6 +3,7 @@
 
 #include "api.h"
 #include "library/ChassisController.h"
+#include "pros/adi.hpp"
 #include "pros/misc.h"
 
 #define RIGHT_MOTOR_1_PORT 1
@@ -22,6 +23,8 @@
 #define INTAKE_PORT 12
 
 #define INERTIAL_PORT 6
+
+#define WINGS_PORT 'H'
 
 extern pros::Controller master;
 
@@ -46,3 +49,5 @@ extern pros::Rotation cataSensor;
 extern pros::Motor IntakeMotor;
 
 extern pros::Imu imu;
+
+extern pros::ADIDigitalOut wings;

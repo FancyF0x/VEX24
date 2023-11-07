@@ -16,6 +16,7 @@ class Catapult {
     bool calibrating = false; //mainly for debugging, but could have some other uses;
 
     bool firing = false;
+    bool stop = false;
 
   private:
     pros::Motor_Group* motors;

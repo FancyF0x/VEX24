@@ -23,19 +23,19 @@ Catapult::Catapult(pros::Motor_Group& catapult_motors, pros::Rotation& catasenso
 
 void Catapult::calibrate() {
   calibrating = true;
-
+  stop = false;
   int lastPos = catasensor->get_position();
 
   do { //basically just move until the position of the cata 
-    motors->move(127); //move very slowly
+    motors->move(127); //move
     lastPos = catasensor->get_position();
 
-    pros::delay(20);
-  } while(lastPos < catasensor->get_position());
+    pros::delay(100);
+  } while(lastPos < catasensor->get_position() && !stop);
 
   motors->brake();
 
-  pros::delay(300); //give the hardware some time to settle
+  pros::delay(300); //give the hardware some time to settle (maybe not needed but idk why not all of this runs before the match starts)
 
   catasensor->reset_position();
   resetPoint = 5860; //distance from very top to very bottom
@@ -44,7 +44,8 @@ void Catapult::calibrate() {
 }
 
 void Catapult::load() {
-  while(resetPoint - catasensor->get_position() > 10) {
+  stop = false;
+  while(resetPoint - catasensor->get_position() > 10 && !stop) {
     double speed = 0;
 
     if(usingPID) {
@@ -52,9 +53,11 @@ void Catapult::load() {
       motors->move(speed); //using move instead of move_velocity to prevent another pid from getting in the way of mine. 
     }
     else {
-      speed = 50; //tune this: I don't feel like making this accessable to the client code... shouldn't be an issue but if one does come up it's pretty easy to write... im just lazy...
+      speed = 100; //tune this: I don't feel like making this accessable to the client code... shouldn't be an issue but if one does come up it's pretty easy to write... im just lazy...
       motors->move(speed); //let the pros built in pid do its thing
     }
+
+    pros::delay(10);
   }
 
   motors->brake(); //hold up and wait for the launch
@@ -67,14 +70,15 @@ void Catapult::fire(bool instantReload) {
     return;
 
   firing=true;
+  stop = false;
   int lastPos = catasensor->get_position();
 
   do {
-    motors->move(70); //don't have to move fast here
+    motors->move(100); //don't have to move fast here
     lastPos = catasensor->get_position();
-    pros::delay(20);
 
-  } while(lastPos < catasensor->get_position()); //wait for a large enough shift (cata fired)
+    pros::delay(100);
+  } while(lastPos < catasensor->get_position() && !stop); //wait for a large enough shift (cata fired)
 
   is_loaded = false;
 

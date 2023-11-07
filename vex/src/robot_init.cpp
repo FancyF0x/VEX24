@@ -1,4 +1,5 @@
 //initialize robot components here
+#include "pros/adi.hpp"
 #include "pros/misc.h"
 #include "robot.h"
 
@@ -26,3 +27,5 @@ pros::Rotation cataSensor = pros::Rotation(CATA_ROT_SENSE_PORT);
 pros::Motor IntakeMotor = pros::Motor(INTAKE_PORT);
 
 pros::Imu imu = pros::Imu(INERTIAL_PORT);
+
+pros::ADIDigitalOut wings = pros::ADIDigitalOut(WINGS_PORT);

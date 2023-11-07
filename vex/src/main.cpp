@@ -22,6 +22,7 @@ void print_debug() {
 	while(true) {
 		lcd::set_text(0, "Cata rotation: " + std::to_string(cataSensor.get_position()));
 		lcd::set_text(1, "Cata calibrating: " + std::to_string(cata.calibrating));
+		lcd::set_text(2, "Cata loaded: " + std::to_string(cata.is_loaded));
 
 		delay(20);
 
@@ -31,8 +32,6 @@ void print_debug() {
 
 void initialize() {
 	IntakeMotor.set_brake_mode(E_MOTOR_BRAKE_HOLD);
-
-	cata_motors.set_brake_modes(E_MOTOR_BRAKE_HOLD);
 	cata_motors.set_gearing(E_MOTOR_GEAR_100);
 	
 	cataSensor.set_position(0);
@@ -46,10 +45,16 @@ void autonomous() {}
 
 void opcontrol() {
 	Task t(print_debug);
+	cata.calibrate();
+
+	bool wingsDeployed = false;
+
+	/*
 	Task c{[=]{
 		cata.calibrate(); //watch dem fingers
-		cata.load();
+		//cata.load();
 	}};
+	*/
 
 	while(true) {
 		//driving
@@ -73,8 +78,17 @@ void opcontrol() {
 		}
 
 		//temporary manual override
-		if(master.get_digital(pros::E_CONTROLLER_DIGITAL_Y))
+		if(master.get_digital(E_CONTROLLER_DIGITAL_Y)) {
+			cata.stop = true; //stops any while loop that's currently running in the cata
 			cata_motors.move(127);
+		}
+		else
+			cata_motors.brake();
+
+		if(master.get_digital_new_press(E_CONTROLLER_DIGITAL_A)) {
+			wingsDeployed = !wingsDeployed;
+			wings.set_value(wingsDeployed);
+		}
 
 		delay(10);
 	}
