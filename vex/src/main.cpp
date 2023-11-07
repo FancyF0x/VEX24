@@ -1,6 +1,7 @@
 #include "main.h"
 #include "pros/llemu.hpp"
 #include "pros/misc.h"
+#include "pros/motors.h"
 #include "robot.h"
 
 #include "library/CatapultController.h"
@@ -23,6 +24,8 @@ void print_debug() {
 		lcd::set_text(0, "Cata rotation: " + std::to_string(cataSensor.get_position()));
 		lcd::set_text(1, "Cata calibrating: " + std::to_string(cata.calibrating));
 		lcd::set_text(2, "Cata loaded: " + std::to_string(cata.is_loaded));
+		lcd::set_text(3, "Intake fold 1 pos: " + std::to_string(intakeFold1.get_position()));
+		lcd::set_text(4, "Intake fold 2 pos: " + std::to_string(intakeFold2.get_position()));
 
 		delay(20);
 
@@ -33,6 +36,7 @@ void print_debug() {
 void initialize() {
 	IntakeMotor.set_brake_mode(E_MOTOR_BRAKE_HOLD);
 	cata_motors.set_gearing(E_MOTOR_GEAR_100);
+	intakeFold.set_gearing(E_MOTOR_GEAR_100);
 	
 	cataSensor.set_position(0);
 }

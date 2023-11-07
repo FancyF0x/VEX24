@@ -16,6 +16,9 @@
 #define LEFT_MOTOR_3_PORT 9
 #define LEFT_MOTOR_4_PORT 10
 
+#define INTAKE_FOLD_1_PORT 18
+#define INTAKE_FOLD_2_PORT 14
+
 #define CATA_ONE_PORT 11
 #define CATA_TWO_PORT 20
 #define CATA_ROT_SENSE_PORT 13
@@ -40,6 +43,10 @@ extern pros::Motor leftMotor4;
 
 extern pros::Motor_Group leftMotors;
 extern pros::Motor_Group rightMotors;
+
+extern pros::Motor intakeFold1;
+extern pros::Motor intakeFold2;
+extern pros::Motor_Group intakeFold;
 
 extern pros::Motor cata1;
 extern pros::Motor cata2;
