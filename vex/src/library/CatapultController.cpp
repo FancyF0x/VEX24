@@ -38,14 +38,20 @@ void Catapult::calibrate() {
   pros::delay(300); //give the hardware some time to settle (maybe not needed but idk why not all of this runs before the match starts)
 
   catasensor->reset_position();
-  resetPoint = 5860; //distance from very top to very bottom
+  resetPoint = 5740; //distance from very top to very bottom
+
+  motors->tare_position();
 
   calibrating = false;
 }
 
 void Catapult::load() {
+  if(loading || firing)
+    return;
+
+  loading = true;
   stop = false;
-  while(resetPoint - catasensor->get_position() > 10 && !stop) {
+  while(resetPoint > catasensor->get_position() && !stop) {
     double speed = 0;
 
     if(usingPID) {
@@ -53,15 +59,17 @@ void Catapult::load() {
       motors->move(speed); //using move instead of move_velocity to prevent another pid from getting in the way of mine. 
     }
     else {
-      speed = 100; //tune this: I don't feel like making this accessable to the client code... shouldn't be an issue but if one does come up it's pretty easy to write... im just lazy...
-      motors->move(speed); //let the pros built in pid do its thing
+      speed = 50; //tune this: I don't feel like making this accessable to the client code... shouldn't be an issue but if one does come up it's pretty easy to write... im just lazy...
+      motors->move_velocity(speed);
     }
 
-    pros::delay(10);
+    pros::delay(5);
   }
 
   motors->brake(); //hold up and wait for the launch
+
   is_loaded = true; //ready to go: let other scripts know
+  loading = false;
 }
 
 //ALL OF THIS SHOULD BE PUT IN A THREAD TO AVOID BLOCKING (unless you want that for auton, idk)
@@ -69,21 +77,25 @@ void Catapult::fire(bool instantReload) {
   if(firing)
     return;
 
+  if(loading) {
+    stop = true;
+    pros::delay(60);
+  }
+
+  if(!is_loaded)
+    load();
+
   firing=true;
   stop = false;
-  int lastPos = catasensor->get_position();
 
-  do {
-    motors->move(100); //don't have to move fast here
-    lastPos = catasensor->get_position();
-
-    pros::delay(100);
-  } while(lastPos < catasensor->get_position() && !stop); //wait for a large enough shift (cata fired)
+  while(catasensor->get_position() > resetPoint/2 && !stop) {
+    motors->move(127);
+    pros::delay(5);
+  }
 
   is_loaded = false;
+  firing=false;
 
   if(instantReload)
     load(); //run this in a thread because I don't feel like waiting for this to happen
-
-  firing=false;
 }

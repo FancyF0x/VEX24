@@ -17,6 +17,7 @@ class Catapult {
 
     bool firing = false;
     bool stop = false;
+    bool loading = false;
 
   private:
     pros::Motor_Group* motors;

@@ -17,6 +17,10 @@ Catapult cata(cata_motors, cataSensor);
 
 using namespace pros;
 
+//to keep track of whether or not the bot is folded and how far the motors have to move to folds
+bool folded = false;
+const int FOLDED_DISTANCE = -450;
+
 void print_debug() {
 	lcd::initialize();
 
@@ -26,6 +30,8 @@ void print_debug() {
 		lcd::set_text(2, "Cata loaded: " + std::to_string(cata.is_loaded));
 		lcd::set_text(3, "Intake fold 1 pos: " + std::to_string(intakeFold1.get_position()));
 		lcd::set_text(4, "Intake fold 2 pos: " + std::to_string(intakeFold2.get_position()));
+		lcd::set_text(5, "Cata firing: " + std::to_string(cata.firing));
+		lcd::set_text(6, "Cata temp: " + std::to_string(cata_motors.get_temperatures()[0]));
 
 		delay(20);
 
@@ -35,7 +41,9 @@ void print_debug() {
 
 void initialize() {
 	IntakeMotor.set_brake_mode(E_MOTOR_BRAKE_HOLD);
+
 	cata_motors.set_gearing(E_MOTOR_GEAR_100);
+	//cata_motors.set_brake_modes(E_MOTOR_BRAKE_HOLD);
 	intakeFold.set_gearing(E_MOTOR_GEAR_100);
 	
 	cataSensor.set_position(0);
@@ -43,22 +51,42 @@ void initialize() {
 
 void disabled() {}
 
-void competition_initialize() {}
+void competition_initialize() {
+	//oragami (fold up to avoid rule breaking)
+	intakeFold.tare_position();
 
-void autonomous() {}
+	while((intakeFold.get_positions()[0] + intakeFold.get_positions()[1]) / 2 > FOLDED_DISTANCE) {
+		intakeFold.move(-127);
+		delay(10);
+	}
+
+	folded = true;
+	intakeFold.brake();
+}
+
+void autonomous() {
+	//unfold then start auton
+	if(folded) {
+		while((intakeFold.get_positions()[0] + intakeFold.get_positions()[1]) / 2 < 20) {
+			intakeFold.move(127);
+			delay(10);
+		}
+
+		folded = false;
+		intakeFold.brake();
+	}
+
+	//run auton
+}
 
 void opcontrol() {
 	Task t(print_debug);
 	cata.calibrate();
+	Task r {[=] {
+		cata.load();
+	}};
 
 	bool wingsDeployed = false;
-
-	/*
-	Task c{[=]{
-		cata.calibrate(); //watch dem fingers
-		//cata.load();
-	}};
-	*/
 
 	while(true) {
 		//driving
@@ -75,9 +103,15 @@ void opcontrol() {
 			IntakeMotor.brake();
 
 		//cata
-		if(master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_X)) {
+		if(master.get_digital_new_press(E_CONTROLLER_DIGITAL_X)) {
 			Task f {[=] {
 				cata.fire();
+			}};
+		}
+
+		if(master.get_digital_new_press(E_CONTROLLER_DIGITAL_B)) {
+			Task f {[=] {
+				cata.load();
 			}};
 		}
 
