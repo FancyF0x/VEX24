@@ -19,19 +19,22 @@ using namespace pros;
 
 //to keep track of whether or not the bot is folded and how far the motors have to move to folds
 bool folded = false;
+bool initializing = false;
 const int FOLDED_DISTANCE = -450;
 
 void print_debug() {
 	lcd::initialize();
+	int line = 0;
 
 	while(true) {
-		lcd::set_text(0, "Cata rotation: " + std::to_string(cataSensor.get_position()));
-		lcd::set_text(1, "Cata calibrating: " + std::to_string(cata.calibrating));
-		lcd::set_text(2, "Cata loaded: " + std::to_string(cata.is_loaded));
-		lcd::set_text(3, "Intake fold 1 pos: " + std::to_string(intakeFold1.get_position()));
-		lcd::set_text(4, "Intake fold 2 pos: " + std::to_string(intakeFold2.get_position()));
-		lcd::set_text(5, "Cata firing: " + std::to_string(cata.firing));
-		lcd::set_text(6, "Cata temp: " + std::to_string(cata_motors.get_temperatures()[0]));
+		line = 0;
+		lcd::set_text(line++, "Cata rotation: " + std::to_string(cataSensor.get_position()));
+		lcd::set_text(line++, "Cata calibrating: " + std::to_string(cata.calibrating));
+		lcd::set_text(line++, "Cata loaded: " + std::to_string(cata.is_loaded));
+		lcd::set_text(line++, "Cata loading: " + std::to_string(cata.loading));
+		lcd::set_text(line++, "Intake fold 1 pos: " + std::to_string(intakeFold1.get_position()));
+		lcd::set_text(line++, "Cata firing: " + std::to_string(cata.firing));
+		lcd::set_text(line++, "Cata temp: " + std::to_string(cata_motors.get_temperatures()[0]));
 
 		delay(20);
 
@@ -39,7 +42,9 @@ void print_debug() {
 	}
 }
 
-void initialize() {
+void initialize() {	
+	Task t(print_debug);
+
 	IntakeMotor.set_brake_mode(E_MOTOR_BRAKE_HOLD);
 
 	cata_motors.set_gearing(E_MOTOR_GEAR_100);
@@ -47,27 +52,25 @@ void initialize() {
 	intakeFold.set_gearing(E_MOTOR_GEAR_100);
 	
 	cataSensor.set_position(0);
+
+	//calibrate cata
+	//cata.calibrate();
+	//cata.load();
 }
 
 void disabled() {}
 
 void competition_initialize() {
-	//oragami (fold up to avoid rule breaking)
-	intakeFold.tare_position();
-
-	while((intakeFold.get_positions()[0] + intakeFold.get_positions()[1]) / 2 > FOLDED_DISTANCE) {
-		intakeFold.move(-127);
-		delay(10);
-	}
-
 	folded = true;
-	intakeFold.brake();
 }
 
 void autonomous() {
 	//unfold then start auton
+	intakeFold.tare_position();
+
 	if(folded) {
-		while((intakeFold.get_positions()[0] + intakeFold.get_positions()[1]) / 2 < 20) {
+		//unfold
+		while((intakeFold.get_positions()[0] + intakeFold.get_positions()[1]) / 2 < 420) {
 			intakeFold.move(127);
 			delay(10);
 		}
@@ -80,7 +83,6 @@ void autonomous() {
 }
 
 void opcontrol() {
-	Task t(print_debug);
 	cata.calibrate();
 	Task r {[=] {
 		cata.load();

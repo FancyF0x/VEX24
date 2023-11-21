@@ -30,15 +30,15 @@ void Catapult::calibrate() {
     motors->move(127); //move
     lastPos = catasensor->get_position();
 
-    pros::delay(100);
-  } while(lastPos < catasensor->get_position() && !stop);
+    pros::delay(50);
+  } while(catasensor->get_position()-lastPos >= 0 && !stop);
 
   motors->brake();
 
-  pros::delay(300); //give the hardware some time to settle (maybe not needed but idk why not all of this runs before the match starts)
+  pros::delay(800); //give the hardware some time to settle (maybe not needed but idk why not all of this runs before the match starts)
 
   catasensor->reset_position();
-  resetPoint = 5740; //distance from very top to very bottom
+  resetPoint = 5500; //distance from very top to very bottom
 
   motors->tare_position();
 
@@ -90,7 +90,7 @@ void Catapult::fire(bool instantReload) {
 
   while(catasensor->get_position() > resetPoint/2 && !stop) {
     motors->move(127);
-    pros::delay(5);
+    pros::delay(20);
   }
 
   is_loaded = false;
