@@ -89,9 +89,11 @@ void Catapult::fire(bool instantReload) {
   stop = false;
 
   while(catasensor->get_position() > resetPoint/2 && !stop) {
-    motors->move(127);
+    motors->move_velocity(100);
     pros::delay(20);
   }
+
+  motors->brake();
 
   is_loaded = false;
   firing=false;
