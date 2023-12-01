@@ -8,6 +8,8 @@
 #include "library/ChassisController.h"
 #include "library/IntakeController.h"
 
+#include <iostream> // for debugging
+
 PID drivePid(1, 0, 0);
 PID turnPid(1, 0, 0);
 Chassis driveChassis(leftMotors, rightMotors, imu, drivePid, turnPid);
@@ -106,6 +108,7 @@ void opcontrol() {
 
 		//cata
 		if(master.get_digital_new_press(E_CONTROLLER_DIGITAL_X)) {
+			std::cout << "X button pressed" << std::endl;
 			Task f {[=] {
 				cata.fire();
 			}};
@@ -122,7 +125,7 @@ void opcontrol() {
 			cata.stop = true; //stops any while loop that's currently running in the cata
 			cata_motors.move(127);
 		}
-		else
+		else if(!cata.firing)
 			cata_motors.brake();
 
 		if(master.get_digital_new_press(E_CONTROLLER_DIGITAL_A)) {

@@ -1,5 +1,6 @@
 #include "library/CatapultController.h"
 #include "pros/rtos.h"
+#include <iostream>
 
 Catapult::Catapult(pros::Motor_Group& catapult_motors, pros::Rotation& catasensor, float resetPoint) {
   Catapult::motors = &catapult_motors;
@@ -89,7 +90,7 @@ void Catapult::fire(bool instantReload) {
   stop = false;
 
   while(catasensor->get_position() > resetPoint/2 && !stop) {
-    motors->move_velocity(100);
+    motors->move(127);
     pros::delay(20);
   }
 
