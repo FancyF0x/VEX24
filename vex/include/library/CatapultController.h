@@ -9,7 +9,7 @@ class Catapult {
     Catapult(pros::Motor_Group& catapult_motors, pros::Rotation& catasensor, PID& pid, float resetPoint=0);
 
     void calibrate(); //run during initialization: finds what the reset position is. DOES NOT RESET. Call reset after calibrating
-    void load(); //reset catapult
+    void load(bool halfway=false); //reset catapult
     void fire(bool instantReload=true); //fire and then reset for next shot ()
 
     bool is_loaded;

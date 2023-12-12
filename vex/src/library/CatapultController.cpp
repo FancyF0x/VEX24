@@ -46,13 +46,13 @@ void Catapult::calibrate() {
   calibrating = false;
 }
 
-void Catapult::load() {
+void Catapult::load(bool halfway) {
   if(loading || firing)
     return;
 
   loading = true;
   stop = false;
-  while(resetPoint > catasensor->get_position() && !stop) {
+  while((halfway ? resetPoint/2 : resetPoint) > catasensor->get_position() && !stop) {
     double speed = 0;
 
     if(usingPID) {

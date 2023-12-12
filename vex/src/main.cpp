@@ -1,3 +1,5 @@
+#define TESTING true
+
 #include "main.h"
 #include "robot.h"
 
@@ -12,7 +14,7 @@
 
 PID drivePid(1, 0, 0);
 PID turnPid(1, 0, 0);
-Chassis driveChassis(leftMotors, rightMotors, imu, drivePid, turnPid);
+Chassis driveChassis(leftMotors, rightMotors, imu, drivePid, turnPid, Chassis::drive_units::in, 3.5);
 
 //PID cataPid(2, 0, 0);
 Catapult cata(cata_motors, cataSensor);
@@ -58,8 +60,10 @@ void initialize() {
 	cataSensor.set_position(0);
 
 	//calibrate cata
-	//cata.calibrate();
-	//cata.load();
+	cata.calibrate();
+	Task r {[=] {
+		cata.load();
+	}};
 }
 
 void disabled() {}
@@ -83,33 +87,30 @@ void competition_initialize() {
 
 void autonomous() {
 	//unfold then start auton
-	intakeFold.tare_position();
+	if(!TESTING) {
+		intakeFold.tare_position();
 
-	if(folded) {
-		//unfold
-		while((intakeFold.get_positions()[0] + intakeFold.get_positions()[1]) / 2 < 420) {
-			intakeFold.move(127);
-			delay(10);
+		if(folded) {
+			//unfold
+			while((intakeFold.get_positions()[0] + intakeFold.get_positions()[1]) / 2 < 420) {
+				intakeFold.move(127);
+				delay(10);
+			}
+
+			folded = false;
+			intakeFold.brake();
 		}
-
-		folded = false;
-		intakeFold.brake();
 	}
 
 	//run auton based off of what the user selected
 	switch(selector.getSelected()) {
 		case 0:
-			runRightAwpAuton();
+			runRightAwpAuton(driveChassis, cata);
 			break;
 	}
 }
 
 void opcontrol() {
-	cata.calibrate();
-	Task r {[=] {
-		cata.load();
-	}};
-
 	bool wingsDeployed = false;
 
 	while(true) {
