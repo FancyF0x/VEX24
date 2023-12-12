@@ -1,14 +1,14 @@
 #include "main.h"
-#include "pros/llemu.hpp"
-#include "pros/misc.h"
-#include "pros/motors.h"
 #include "robot.h"
 
 #include "library/CatapultController.h"
 #include "library/ChassisController.h"
 #include "library/IntakeController.h"
+#include "library/AutonSelector.h"
 
 #include <iostream> // for debugging
+
+#include "autons/AWPRight.cpp"
 
 PID drivePid(1, 0, 0);
 PID turnPid(1, 0, 0);
@@ -16,6 +16,8 @@ Chassis driveChassis(leftMotors, rightMotors, imu, drivePid, turnPid);
 
 //PID cataPid(2, 0, 0);
 Catapult cata(cata_motors, cataSensor);
+
+AutonSelector selector(1);
 
 using namespace pros;
 
@@ -64,6 +66,19 @@ void disabled() {}
 
 void competition_initialize() {
 	folded = true;
+
+	//add the autons to the selector
+	selector.add("Right Side AWP", "Push in preload", "score blue+hang");
+
+	//Allow the user to select an auton
+	while(true) {
+		selector.display_autons(); //update screen
+
+		if(master.get_digital_new_press(E_CONTROLLER_DIGITAL_UP))
+			selector.iterate();
+
+		delay(15);
+  	}
 }
 
 void autonomous() {
@@ -81,7 +96,12 @@ void autonomous() {
 		intakeFold.brake();
 	}
 
-	//run auton
+	//run auton based off of what the user selected
+	switch(selector.getSelected()) {
+		case 0:
+			runRightAwpAuton();
+			break;
+	}
 }
 
 void opcontrol() {
