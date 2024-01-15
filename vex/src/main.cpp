@@ -10,7 +10,7 @@
 
 #include <iostream> // for debugging
 
-#include "autons/AWPRight.cpp"
+#include "autons/AWPRight.h"
 
 PID drivePid(1, 0, 0);
 PID turnPid(1, 0, 0);

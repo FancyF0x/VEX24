@@ -1,8 +1,5 @@
-#include "api.h"
+#include "autons/AWPRight.h"
 #include "robot.h"
-
-#include "library/ChassisController.h"
-#include "library/CatapultController.h"
 
 void runRightAwpAuton(Chassis& driveChassis, Catapult& cata) {
     //turn to push preload into goal
