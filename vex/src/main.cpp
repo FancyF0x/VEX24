@@ -15,7 +15,7 @@ PID turnPid(1, 0, 0);
 Chassis driveChassis(leftMotors, rightMotors, imu, drivePid, turnPid);
 
 //PID cataPid(2, 0, 0);
-Catapult cata(cata_motors, cataSensor);
+// Catapult cata(cata_motors, cataSensor);
 
 AutonSelector selector(1);
 
@@ -27,36 +27,19 @@ bool initializing = false;
 const int FOLDED_DISTANCE = -450;
 
 void print_debug() {
-	lcd::initialize();
-	int line = 0;
 
-	while(true) {
-		line = 0;
-		lcd::set_text(line++, "Cata rotation: " + std::to_string(cataSensor.get_position()));
-		lcd::set_text(line++, "Cata calibrating: " + std::to_string(cata.calibrating));
-		lcd::set_text(line++, "Cata loaded: " + std::to_string(cata.is_loaded));
-		lcd::set_text(line++, "Cata loading: " + std::to_string(cata.loading));
-		lcd::set_text(line++, "Intake fold 1 pos: " + std::to_string(intakeFold1.get_position()));
-		lcd::set_text(line++, "Cata firing: " + std::to_string(cata.firing));
-		lcd::set_text(line++, "Cata temp: " + std::to_string(cata_motors.get_temperatures()[0]));
-
-		delay(20);
-
-		lcd::clear();
-	}
 }
 
 void initialize() {	
 	Task t(print_debug);
 
-	IntakeMotor.set_brake_mode(E_MOTOR_BRAKE_HOLD);
+	// intakeMotors.set_brake_modes(E_MOTOR_BRAKE_HOLD);
 
-	cata_motors.set_gearing(E_MOTOR_GEAR_100);
+	flywheelMotors.set_gearing(E_MOTOR_GEAR_100);
+
 	//cata_motors.set_brake_modes(E_MOTOR_BRAKE_HOLD);
 	intakeFold.set_gearing(E_MOTOR_GEAR_100);
 	
-	cataSensor.set_position(0);
-
 	//calibrate cata
 	//cata.calibrate();
 	//cata.load();
@@ -82,35 +65,33 @@ void competition_initialize() {
 }
 
 void autonomous() {
-	//unfold then start auton
-	intakeFold.tare_position();
+	// //unfold then start auton
+	// intakeFold.tare_position();
 
-	if(folded) {
-		//unfold
-		while((intakeFold.get_positions()[0] + intakeFold.get_positions()[1]) / 2 < 420) {
-			intakeFold.move(127);
-			delay(10);
-		}
+	// if(folded) {
+	// 	//unfold
+	// 	while((intakeFold.get_positions()[0] + intakeFold.get_positions()[1]) / 2 < 420) {
+	// 		intakeFold.move(127);
+	// 		delay(10);
+	// 	}
 
-		folded = false;
-		intakeFold.brake();
-	}
+	// 	folded = false;
+	// 	intakeFold.brake();
+	// }
 
-	//run auton based off of what the user selected
-	switch(selector.getSelected()) {
-		case 0:
-			runRightAwpAuton();
-			break;
-	}
+	// //run auton based off of what the user selected
+	// switch(selector.getSelected()) {
+	// 	case 0:
+	// 		runRightAwpAuton();
+	// 		break;
+	// }
 }
 
 void opcontrol() {
-	cata.calibrate();
-	Task r {[=] {
-		cata.load();
-	}};
-
-	bool wingsDeployed = false;
+	// cata.calibrate();
+	// Task r {[=] {
+	// 	cata.load();
+	// }};
 
 	while(true) {
 		//driving
@@ -120,38 +101,60 @@ void opcontrol() {
 
 		//intake
 		if(master.get_digital(E_CONTROLLER_DIGITAL_R1))
-			IntakeMotor.move(127);
+			intakeMotors.move(100);
 		else if(master.get_digital(E_CONTROLLER_DIGITAL_R2))
-			IntakeMotor.move(-127);
+			intakeMotors.move(-100);
 		else
-			IntakeMotor.brake();
+			intakeMotors.brake();
 
-		//cata
-		if(master.get_digital_new_press(E_CONTROLLER_DIGITAL_X)) {
-			std::cout << "X button pressed" << std::endl;
-			Task f {[=] {
-				cata.fire();
-			}};
+		//intake foldding
+		if(master.get_digital(E_CONTROLLER_DIGITAL_L1)){
+			intakeFold.move(127);
+		}
+		else if(master.get_digital(E_CONTROLLER_DIGITAL_L2)){
+			intakeFold.move(-127);
+
+		}
+		else{
+			intakeFold.brake();
 		}
 
-		if(master.get_digital_new_press(E_CONTROLLER_DIGITAL_B)) {
-			Task f {[=] {
-				cata.load();
-			}};
+		//flywheel
+		if(master.get_digital(E_CONTROLLER_DIGITAL_X)){
+			flywheelMotors.move(127);
+		}
+		else if(master.get_digital(E_CONTROLLER_DIGITAL_B)){
+			flywheelMotors.move(-127);
+
+		}
+		else{
+			flywheelMotors.brake();
 		}
 
-		//temporary manual override
-		if(master.get_digital(E_CONTROLLER_DIGITAL_Y)) {
-			cata.stop = true; //stops any while loop that's currently running in the cata
-			cata_motors.move(127);
-		}
-		else if(!cata.firing)
-			cata_motors.brake();
 
-		if(master.get_digital_new_press(E_CONTROLLER_DIGITAL_A)) {
-			wingsDeployed = !wingsDeployed;
-			wings.set_value(wingsDeployed);
-		}
+		
+
+		// //cata
+		// if(master.get_digital_new_press(E_CONTROLLER_DIGITAL_X)) {
+		// 	std::cout << "X button pressed" << std::endl;
+		// 	Task f {[=] {
+		// 		cata.fire();
+		// 	}};
+		// }
+
+		// if(master.get_digital_new_press(E_CONTROLLER_DIGITAL_B)) {
+		// 	Task f {[=] {
+		// 		cata.load();
+		// 	}};
+		// }
+
+		// //temporary manual override
+		// if(master.get_digital(E_CONTROLLER_DIGITAL_Y)) {
+		// 	cata.stop = true; //stops any while loop that's currently running in the cata
+		// 	cata_motors.move(127);
+		// }
+		// else if(!cata.firing)
+		// 	cata_motors.brake();
 
 		delay(10);
 	}
