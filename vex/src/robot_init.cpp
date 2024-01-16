@@ -11,25 +11,28 @@ pros::Motor rightMotor3 = pros::Motor(RIGHT_MOTOR_3_PORT);
 pros::Motor rightMotor4 = pros::Motor(RIGHT_MOTOR_4_PORT, true);
 
 pros::Motor leftMotor1 = pros::Motor(LEFT_MOTOR_1_PORT, true);
-pros::Motor leftMotor2 = pros::Motor(LEFT_MOTOR_2_PORT, true);
+pros::Motor leftMotor2 = pros::Motor(LEFT_MOTOR_2_PORT);
 pros::Motor leftMotor3 = pros::Motor(LEFT_MOTOR_3_PORT);
 pros::Motor leftMotor4 = pros::Motor(LEFT_MOTOR_4_PORT);
 
 pros::Motor_Group leftMotors = pros::Motor_Group({leftMotor1, leftMotor2, leftMotor3, leftMotor4});
 pros::Motor_Group rightMotors = pros::Motor_Group({rightMotor1, rightMotor2, rightMotor3, rightMotor4});
 
-pros::Motor intakeFold1 = pros::Motor(INTAKE_FOLD_1_PORT);
-pros::Motor intakeFold2 = pros::Motor(INTAKE_FOLD_2_PORT, true);
-pros::Motor_Group intakeFold = pros::Motor_Group({intakeFold1, intakeFold2});
+// pros::Motor intakeFold1 = pros::Motor(INTAKE_FOLD_1_PORT);
+// pros::Motor intakeFold2 = pros::Motor(INTAKE_FOLD_2_PORT, true);
+// pros::Motor_Group intakeFold = pros::Motor_Group({intakeFold1, intakeFold2});
 
-pros::Motor cata1 = pros::Motor(CATA_ONE_PORT);
-pros::Motor cata2 = pros::Motor(CATA_TWO_PORT, true);
-pros::Motor_Group cata_motors = pros::Motor_Group({cata1,cata2});
+// pros::Motor cata1 = pros::Motor(CATA_ONE_PORT);
+// pros::Motor cata2 = pros::Motor(CATA_TWO_PORT, true);
+// pros::Motor_Group cata_motors = pros::Motor_Group({cata1,cata2});
 
-pros::Rotation cataSensor = pros::Rotation(CATA_ROT_SENSE_PORT);
+// pros::Rotation cataSensor = pros::Rotation(CATA_ROT_SENSE_PORT);
 
-pros::Motor IntakeMotor = pros::Motor(INTAKE_PORT);
-
-pros::Imu imu = pros::Imu(INERTIAL_PORT);
+pros::Motor IntakeMotor = pros::Motor(OUTTAKE_PORT);
 
 pros::ADIDigitalOut wings = pros::ADIDigitalOut(WINGS_PORT);
+
+void initializeIO() {
+  pinMode(OUTTAKE_PORT, OUTPUT); // configure digital port 1 as an output
+  digitalWrite(OUTTAKE_PORT, LOW); // write LOW to port OUTTAKE (solenoid may be extended or not, depending on wiring)
+}

@@ -6,26 +6,17 @@
 #include "pros/adi.hpp"
 #include "pros/misc.h"
 
-#define RIGHT_MOTOR_1_PORT 1
-#define RIGHT_MOTOR_2_PORT 3
-#define RIGHT_MOTOR_3_PORT 4
-#define RIGHT_MOTOR_4_PORT 5
+#define RIGHT_MOTOR_1_PORT 11
+#define RIGHT_MOTOR_2_PORT 13
+#define RIGHT_MOTOR_3_PORT 15
+#define RIGHT_MOTOR_4_PORT 12
 
-#define LEFT_MOTOR_1_PORT 7
-#define LEFT_MOTOR_2_PORT 8
-#define LEFT_MOTOR_3_PORT 9
-#define LEFT_MOTOR_4_PORT 10
+#define LEFT_MOTOR_1_PORT 19
+#define LEFT_MOTOR_2_PORT 17
+#define LEFT_MOTOR_3_PORT 18
+#define LEFT_MOTOR_4_PORT 14
 
-#define INTAKE_FOLD_1_PORT 18
-#define INTAKE_FOLD_2_PORT 14
-
-#define CATA_ONE_PORT 11
-#define CATA_TWO_PORT 20
-#define CATA_ROT_SENSE_PORT 13
-
-#define INTAKE_PORT 12
-
-#define INERTIAL_PORT 6
+#define OUTTAKE_PORT 20
 
 #define WINGS_PORT 'H'
 
