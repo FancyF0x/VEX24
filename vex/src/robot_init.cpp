@@ -31,8 +31,3 @@ pros::Motor_Group rightMotors = pros::Motor_Group({rightMotor1, rightMotor2, rig
 pros::Motor IntakeMotor = pros::Motor(OUTTAKE_PORT);
 
 pros::ADIDigitalOut wings = pros::ADIDigitalOut(WINGS_PORT);
-
-void initializeIO() {
-  pinMode(OUTTAKE_PORT, OUTPUT); // configure digital port 1 as an output
-  digitalWrite(OUTTAKE_PORT, LOW); // write LOW to port OUTTAKE (solenoid may be extended or not, depending on wiring)
-}
