@@ -1,4 +1,5 @@
 #include "main.h"
+#include "pros/misc.h"
 #include "robot.h"
 
 #include "library/CatapultController.h"
@@ -21,11 +22,6 @@ AutonSelector selector(1);
 
 using namespace pros;
 
-//to keep track of whether or not the bot is folded and how far the motors have to move to folds
-bool folded = false;
-bool initializing = false;
-const int FOLDED_DISTANCE = -450;
-
 void print_debug() {
 
 }
@@ -39,6 +35,8 @@ void initialize() {
 
 	//cata_motors.set_brake_modes(E_MOTOR_BRAKE_HOLD);
 	intakeFold.set_gearing(E_MOTOR_GEAR_100);
+
+	intakeFold.set_brake_modes(E_MOTOR_BRAKE_BRAKE);
 	
 	//calibrate cata
 	//cata.calibrate();
@@ -48,8 +46,6 @@ void initialize() {
 void disabled() {}
 
 void competition_initialize() {
-	folded = true;
-
 	//add the autons to the selector
 	selector.add("Right Side AWP", "Push in preload", "score blue+hang");
 
@@ -99,23 +95,26 @@ void opcontrol() {
 		double rightMove = master.get_analog(E_CONTROLLER_ANALOG_RIGHT_Y);
 		driveChassis.DriveTank(leftMove, rightMove);
 
-		//intake
-		if(master.get_digital(E_CONTROLLER_DIGITAL_R1))
-			intakeMotors.move(100);
-		else if(master.get_digital(E_CONTROLLER_DIGITAL_R2))
-			intakeMotors.move(-100);
-		else
+		if(master.get_digital(E_CONTROLLER_DIGITAL_R1)) {
+			intakeMotors.move(25);
+		}
+		else if(master.get_digital(E_CONTROLLER_DIGITAL_R2)) {
+			intakeMotors.move(-25);
+		}
+		else {
 			intakeMotors.brake();
+		}
 
 		//intake foldding
 		if(master.get_digital(E_CONTROLLER_DIGITAL_L1)){
-			intakeFold.move(127);
+			intakeFold.move(90);
+			intakeMotors.move(25);
 		}
 		else if(master.get_digital(E_CONTROLLER_DIGITAL_L2)){
-			intakeFold.move(-127);
-
+			intakeFold.move(-90);
+			intakeMotors.brake();
 		}
-		else{
+		else {
 			intakeFold.brake();
 		}
 

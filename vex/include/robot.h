@@ -6,15 +6,15 @@
 #include "pros/adi.hpp"
 #include "pros/misc.h"
 
-#define RIGHT_MOTOR_1_PORT 6
-#define RIGHT_MOTOR_2_PORT 7
-#define RIGHT_MOTOR_3_PORT 8
-#define RIGHT_MOTOR_4_PORT 9
+#define RIGHT_MOTOR_1_PORT 1
+#define RIGHT_MOTOR_2_PORT 2
+#define RIGHT_MOTOR_3_PORT 3
+#define RIGHT_MOTOR_4_PORT 4
 
-#define LEFT_MOTOR_1_PORT 1
-#define LEFT_MOTOR_2_PORT 2
-#define LEFT_MOTOR_3_PORT 3
-#define LEFT_MOTOR_4_PORT 4
+#define LEFT_MOTOR_1_PORT 6
+#define LEFT_MOTOR_2_PORT 7
+#define LEFT_MOTOR_3_PORT 8
+#define LEFT_MOTOR_4_PORT 9
 
 //LEFT = 1, RIGHT = 2
 #define INTAKE_FOLD_1_PORT 16
