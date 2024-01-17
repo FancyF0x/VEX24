@@ -23,7 +23,7 @@ class Chassis {
         void DriveTank(double left, double right);
 
         void MovePid(double distance, float speed_m, float slewrate=-1); //with pid
-        void Move(double distance, int speed, float slewrate=-1);        //without pid
+        void Move(double distance, int speed, float slewrate=-1, int timeout=-1);        //without pid
 
         void TurnPid(int degrees, float speed_m);                        //with pid
         void Turn(int degrees, int speed);                               //without pid

@@ -110,12 +110,21 @@ void Chassis::MovePid(double distance, float speed_m, float slewrate) {
     left->brake();
 }
 
-void Chassis::Move(double distance, int speed, float slewrate) {
+void Chassis::Move(double distance, int speed, float slewrate, int timeout) {
     resetMotors();
 
     double slew=0;
+    int elapsedTime;
 
     while(std::abs(distanceToEncoder(distance)-getAveragePosition(true)) > 5) {
+        //handle timeout
+        if(timeout != -1) {
+            elapsedTime += 20;
+
+            if(elapsedTime >= timeout)
+                break;
+        }
+
         int s = speed * (distance<0?-1:1);
 
         if(slewrate>0 && slew<s) {
