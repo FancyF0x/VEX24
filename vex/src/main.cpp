@@ -1,3 +1,5 @@
+#define KYLE_DRIVING true
+
 #include "main.h"
 #include "pros/misc.h"
 #include "robot.h"
@@ -48,6 +50,17 @@ void competition_initialize() {
 		delay(10);
   	}
 	*/
+
+	//calibrate imu (blocking)
+	master.clear();
+	master.print(0, 0, "Calibrating...");
+	delay(60);
+
+	imu.reset();
+	delay(3000);
+	imu.tare_rotation();
+
+	master.print(0, 0, "Done calibrating!");
 }
 
 void autonomous() {
@@ -60,9 +73,16 @@ void opcontrol() {
 
 	while(true) {
 		//driving
-		double leftAmount = master.get_analog(E_CONTROLLER_ANALOG_LEFT_Y);
-		double rightAmount = master.get_analog(E_CONTROLLER_ANALOG_RIGHT_Y);
-		driveChassis.DriveTank(leftAmount, rightAmount);
+		if(KYLE_DRIVING) {
+			double leftAmount = master.get_analog(E_CONTROLLER_ANALOG_LEFT_Y);
+			double rightAmount = master.get_analog(E_CONTROLLER_ANALOG_RIGHT_Y);
+			driveChassis.DriveTank(leftAmount, rightAmount);
+		}
+		else {
+			double driveAmount = master.get_analog(E_CONTROLLER_ANALOG_LEFT_Y);
+			double turnAmount = master.get_analog(E_CONTROLLER_ANALOG_RIGHT_X);
+			driveChassis.DriveArcade(driveAmount, turnAmount); 
+		}
 
 		//intake
 		if(master.get_digital(E_CONTROLLER_DIGITAL_R1))

@@ -135,12 +135,16 @@ void Chassis::Move(double distance, int speed, float slewrate) {
 
 void Chassis::TurnPid(int degrees, float speed_m) {
     gyro->tare_rotation();
+    double averageMotorSpeed = 99999;
 
-    while(std::abs(degrees - gyro->get_rotation()) > 3) {
-        double s = turnPid.calculate(degrees-gyro->get_rotation(), false) * speed_m;
+    while(std::abs(degrees - gyro->get_rotation()) > 6 || std::abs(averageMotorSpeed) > 1) {
+        std::cout << std::abs(degrees - gyro->get_rotation()) << std::endl;
+        double s = turnPid.calculate(degrees - gyro->get_rotation(), false) * speed_m;
 
         right->move(-s);
         left->move(s);
+
+        averageMotorSpeed = average(right->get_actual_velocities());
 
         pros::delay(20);
     }
