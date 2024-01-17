@@ -2,6 +2,7 @@
 
 #include "api.h"
 #include "pid.h"
+#include <vector>
 
 class Chassis {
     public:
@@ -43,4 +44,5 @@ class Chassis {
 
         void resetMotors();
         int distanceToEncoder(double distance);
+        double average(std::vector<double> values);
 };

@@ -1,5 +1,5 @@
 #include "library/ChassisController.h"
-#include <vector>
+#include <iostream>
 
 #define PI 3.1415926
 
@@ -88,8 +88,9 @@ void Chassis::MovePid(double distance, float speed_m, float slewrate) {
     resetMotors();
 
     double slew=0;
+    double averageMotorSpeed = 99999;
 
-    while(std::abs(distanceToEncoder(distance)-getAveragePosition(true)) > 3) {
+    while(std::abs(distanceToEncoder(distance)-getAveragePosition(true)) > 7 || std::abs(averageMotorSpeed)>1) {
         double s = pid.calculate(distance-getAveragePosition(true), false) * speed_m;
 
         if(slewrate>0 && slew<s) {
@@ -99,6 +100,8 @@ void Chassis::MovePid(double distance, float speed_m, float slewrate) {
 
         right->move(s);
         left->move(s);
+
+        averageMotorSpeed = (average(right->get_actual_velocities()) + average(left->get_actual_velocities())) / 2;
 
         pros::delay(20);
     }
@@ -204,4 +207,11 @@ int Chassis::distanceToEncoder(double distance) {
         return (int)((distance / (2*PI*wheelRadius)) * 360);
     else
         return (int)distance;
+}
+
+double Chassis::average(std::vector<double> values) {
+    double sum = 0;
+    for(int i=0; i<values.size(); i++)
+        sum += values.at(i);
+    return sum / values.size();
 }
