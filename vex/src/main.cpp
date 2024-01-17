@@ -20,7 +20,7 @@ bool initializing = false;
 
 void initialize() {	
 	IntakeMotor.set_brake_mode(E_MOTOR_BRAKE_HOLD);
-	climbMotor.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
+	climbMotor.set_brake_mode(E_MOTOR_BRAKE_HOLD);
 }
 
 void disabled() {}

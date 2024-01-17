@@ -112,7 +112,7 @@ void Chassis::Move(double distance, int speed, float slewrate) {
 
     double slew=0;
 
-    while(std::abs(distanceToEncoder(distance)-getAveragePosition(true)) > 3) {
+    while(std::abs(distanceToEncoder(distance)-getAveragePosition(true)) > 5) {
         int s = speed * (distance<0?-1:1);
 
         if(slewrate>0 && slew<s) {

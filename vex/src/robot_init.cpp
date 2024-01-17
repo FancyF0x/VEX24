@@ -27,8 +27,7 @@ pros::Imu imu = pros::Imu(INERTIAL_PORT);
 pros::ADIDigitalOut frontWings = pros::ADIDigitalOut(FRONT_WINGS_PORT);
 pros::ADIDigitalOut backWings = pros::ADIDigitalOut(BACK_WINGS_PORT);
 
-
-PID drivePid = PID(1, 0, 0);
+PID drivePid = PID(0.5, 0.01, 1.5, 20, 20, 3, 30);
 PID turnPid = PID(1, 0, 0);
 
 Chassis driveChassis = Chassis(leftMotors, rightMotors, imu, drivePid, turnPid);

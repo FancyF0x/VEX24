@@ -2,11 +2,7 @@
 
 class PID {
   public:
-    PID();
-    PID(double Kp, double Ki, double Kd, double dt, double IMax, double IMin, double MaxI);
-    PID(double Kp, double Ki, double Kd, double dt, double IMax, double IMin);
-    PID(double Kp, double Ki, double Kd, double dt);
-    PID(double Kp, double Ki, double Kd);
+    PID(double Kp=1, double Ki=0, double Kd=0, double dt=20, double IMax=20, double IMin=5, double MaxI=65);
 
     double calculate(double error, bool delay=true); //returns the output of the desired pid
     void reset(); //resetting if the user wishes to perform the same pid more than once
