@@ -28,6 +28,6 @@ pros::ADIDigitalOut frontWings = pros::ADIDigitalOut(FRONT_WINGS_PORT);
 pros::ADIDigitalOut backWings = pros::ADIDigitalOut(BACK_WINGS_PORT);
 
 PID drivePid = PID(0.5, 0.01, 1.5, 20, 20, 3, 30);
-PID turnPid = PID(1.3, 0.01, 0.85, 20, 10, 2, 20);
+PID turnPid = PID(1.3, 0.05, 0.85, 20, 10, 2, 20);
 
 Chassis driveChassis = Chassis(leftMotors, rightMotors, imu, drivePid, turnPid);

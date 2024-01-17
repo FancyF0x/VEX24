@@ -1,5 +1,6 @@
 #include "robot.h"
 #include "api.h"
+#include "HelperMethods.h"
 
 void frontWingsDown() {
     frontWings.set_value(1);

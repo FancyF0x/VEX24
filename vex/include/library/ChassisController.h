@@ -22,11 +22,11 @@ class Chassis {
         void DriveArcade(double drive, double turn, float turn_expo=1, float drive_expo=1);
         void DriveTank(double left, double right);
 
-        void MovePid(double distance, float speed_m, float slewrate=-1); //with pid
-        void Move(double distance, int speed, float slewrate=-1, int timeout=-1);        //without pid
+        void MovePid(double distance, float speed_m, float slewrate=-1, bool inertialLock=false); //with pid
+        void Move(double distance, int speed, float slewrate=-1, int timeout=-1, bool inertialLock=false);        //without pid
 
-        void TurnPid(int degrees, float speed_m);                        //with pid
-        void Turn(int degrees, int speed);                               //without pid
+        void TurnPid(int degrees, float speed_m, int disable=-1);       //with pid (0 to disable left side, 1 to disable right side) (disabling will cause only one side of the wheels to spin)
+        void Turn(int degrees, int speed, int disable=-1);                               //without pid
 
         double getAverageRightPosition(bool rawEncoder);
         double getAverageLeftPosition(bool rawEncoder);
