@@ -86,6 +86,8 @@ void autonomous() {
 void opcontrol() {
 	bool frontWingsDeployed = false;
 	bool backWingsDeployed = false;
+	rightMotors.set_brake_modes(E_MOTOR_BRAKE_COAST);
+	leftMotors.set_brake_modes(E_MOTOR_BRAKE_COAST);
 
 	while(true) {
 		//driving

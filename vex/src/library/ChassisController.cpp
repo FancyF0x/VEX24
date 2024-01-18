@@ -92,7 +92,7 @@ void Chassis::MovePid(double distance, float speed_m, float slewrate, bool inert
     if(inertialLock)
         gyro->tare();
 
-    while(std::abs(distanceToEncoder(distance)-getAveragePosition(true)) > 10 || std::abs(averageMotorSpeed)>1) {
+    while(std::abs(distance-getAveragePosition(true)) > 6 || std::abs(averageMotorSpeed)>1) {
         double s = pid.calculate(distance-getAveragePosition(true), false) * speed_m;
         double t = inertialLock ? turnPid.calculate(gyro->get_rotation(), false) : 0;
 
@@ -125,7 +125,8 @@ void Chassis::Move(double distance, int speed, float slewrate, int timeout, bool
     if(inertialLock)
         gyro->tare();
 
-    while(std::abs(distanceToEncoder(distance)-getAveragePosition(true)) > 5) {
+    while(distanceToEncoder(std::abs(distance)) > std::abs(getAveragePosition(true))) {
+        std::cout << distanceToEncoder(distance)-getAveragePosition(true) << std::endl;
         //handle timeout
         if(timeout != -1) {
             elapsedTime += 20;
