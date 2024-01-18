@@ -18,11 +18,24 @@ using namespace pros;
 
 bool initializing = false;
 
-// void print_debug() {}
+void print_debug() {
+	lcd::initialize();
+
+	while(true) {
+		lcd::set_text(1, "Climber position: " + std::to_string(climbMotor.get_position()));
+
+		delay(10);
+
+		lcd::clear();
+	}
+}
 
 void initialize() {	
 	IntakeMotor.set_brake_mode(E_MOTOR_BRAKE_HOLD);
 	climbMotor.set_brake_mode(E_MOTOR_BRAKE_HOLD);
+	climbMotor.tare_position();
+
+	Task t(print_debug);
 }
 
 void disabled() {}
@@ -53,14 +66,17 @@ void competition_initialize() {
 
 	//calibrate imu (blocking)
 	master.clear();
-	master.print(0, 0, "Calibrating...");
+	delay(60);
+	master.set_text(0, 0, "Calibrating...");
 	delay(60);
 
 	imu.reset();
 	delay(3000);
 	imu.tare_rotation();
 
-	master.print(0, 0, "Done calibrating!");
+	master.clear();
+	delay(60);
+	master.set_text(0, 0, "Armed");
 }
 
 void autonomous() {

@@ -17,3 +17,11 @@ void backWingsDown() {
 void backWingsUp() {
     backWings.set_value(0);
 }
+
+void startIntake(bool in) {
+    IntakeMotor.move(in ? -127 : 127);
+}
+
+void stopIntake() {
+    IntakeMotor.brake();
+}
