@@ -25,9 +25,9 @@ inline void runRightAwpAuton() {
     backWingsUp();
 
     //start raising climber
-    pros::Task c([]() {
-        climbMotor.move_absolute(4800, 100);
-    });
+    // pros::Task c([]() {
+    //     climbMotor.move_absolute(4800, 100);
+    // });
 
     driveChassis.MovePid(-200, 1, -1, true);
     driveChassis.TurnPid(135, 1);

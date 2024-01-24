@@ -11,16 +11,16 @@
 #define RIGHT_MOTOR_3_PORT 3
 #define RIGHT_MOTOR_4_PORT 4
 
-#define INERTIAL_PORT 5
+#define INERTIAL_PORT 10
 
-#define INTAKE_PORT 6
+#define INTAKE_PORT 21
 
-#define LEFT_MOTOR_1_PORT 7
-#define LEFT_MOTOR_2_PORT 8
-#define LEFT_MOTOR_3_PORT 9
-#define LEFT_MOTOR_4_PORT 10
+#define LEFT_MOTOR_1_PORT 5
+#define LEFT_MOTOR_2_PORT 6
+#define LEFT_MOTOR_3_PORT 7
+#define LEFT_MOTOR_4_PORT 8
 
-#define CLIMB_MOTOR_PORT 20
+// #define CLIMB_MOTOR_PORT 20
 
 #define FRONT_WINGS_PORT 'A'
 #define BACK_WINGS_PORT 'B'
@@ -43,7 +43,7 @@ extern pros::Motor IntakeMotor;
 extern pros::Motor_Group leftMotors;
 extern pros::Motor_Group rightMotors;
 
-extern pros::Motor climbMotor;
+// extern pros::Motor climbMotor;
 
 extern pros::Imu imu;
 

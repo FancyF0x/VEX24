@@ -22,7 +22,7 @@ void print_debug() {
 	lcd::initialize();
 
 	while(true) {
-		lcd::set_text(1, "Climber position: " + std::to_string(climbMotor.get_position()));
+		// lcd::set_text(1, "Climber position: " + std::to_string(climbMotor.get_position()));
 
 		delay(10);
 
@@ -32,8 +32,8 @@ void print_debug() {
 
 void initialize() {	
 	IntakeMotor.set_brake_mode(E_MOTOR_BRAKE_HOLD);
-	climbMotor.set_brake_mode(E_MOTOR_BRAKE_HOLD);
-	climbMotor.tare_position();
+	// climbMotor.set_brake_mode(E_MOTOR_BRAKE_HOLD);
+	// climbMotor.tare_position();
 
 	Task t(print_debug);
 }
@@ -121,12 +121,12 @@ void opcontrol() {
 		}
 
 		//climber
-		if(master.get_digital(E_CONTROLLER_DIGITAL_UP))
-			climbMotor.move(-127);
-		else if(master.get_digital(E_CONTROLLER_DIGITAL_DOWN))
-			climbMotor.move(127);
-		else
-			climbMotor.brake();
+		// if(master.get_digital(E_CONTROLLER_DIGITAL_UP))
+		// 	climbMotor.move(-127);
+		// else if(master.get_digital(E_CONTROLLER_DIGITAL_DOWN))
+		// 	climbMotor.move(127);
+		// else
+		// 	climbMotor.brake();
 
 
 		delay(10);

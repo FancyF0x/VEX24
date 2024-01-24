@@ -20,7 +20,7 @@ pros::Motor_Group leftMotors = pros::Motor_Group({leftMotor1, leftMotor2, leftMo
 pros::Motor_Group rightMotors = pros::Motor_Group({rightMotor1, rightMotor2, rightMotor3, rightMotor4});
 
 pros::Motor IntakeMotor = pros::Motor(INTAKE_PORT);
-pros::Motor climbMotor = pros::Motor(CLIMB_MOTOR_PORT);
+// pros::Motor climbMotor = pros::Motor(CLIMB_MOTOR_PORT);
 
 pros::Imu imu = pros::Imu(INERTIAL_PORT);
 
