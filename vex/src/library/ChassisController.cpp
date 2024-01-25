@@ -1,5 +1,5 @@
 #include "library/ChassisController.h"
-#include <vector>
+#include <iostream>
 
 #define PI 3.1415926
 
@@ -84,21 +84,30 @@ void Chassis::DriveTank(double left, double right) {
     Chassis::left->move(left);
 }
 
-void Chassis::MovePid(double distance, float speed_m, float slewrate) {
+void Chassis::MovePid(double distance, float speed_m, float slewrate, bool inertialLock) {
     resetMotors();
 
     double slew=0;
+    double averageMotorSpeed = 99999;
+    if(inertialLock)
+        gyro->tare();
 
-    while(std::abs(distanceToEncoder(distance)-getAveragePosition(true)) > 3) {
+    while(std::abs(distance-getAveragePosition(true)) > 6 || std::abs(averageMotorSpeed)>1) {
         double s = pid.calculate(distance-getAveragePosition(true), false) * speed_m;
+        double t = inertialLock ? turnPid.calculate(gyro->get_rotation(), false) : 0;
+
+        if(std::abs(s) < 3)
+            break; //too slow to move, just stop it, get some help
 
         if(slewrate>0 && slew<s) {
             s = slew;
             slew += slewrate;
         }
 
-        right->move(s);
-        left->move(s);
+        right->move(s + t);
+        left->move(s - t);
+
+        averageMotorSpeed = (average(right->get_actual_velocities()) + average(left->get_actual_velocities())) / 2;
 
         pros::delay(20);
     }
@@ -107,21 +116,35 @@ void Chassis::MovePid(double distance, float speed_m, float slewrate) {
     left->brake();
 }
 
-void Chassis::Move(double distance, int speed, float slewrate) {
+void Chassis::Move(double distance, int speed, float slewrate, int timeout, bool inertialLock) {
     resetMotors();
 
     double slew=0;
+    int elapsedTime = 0;
 
-    while(std::abs(distanceToEncoder(distance)-getAveragePosition(true)) > 3) {
+    if(inertialLock)
+        gyro->tare();
+
+    while(distanceToEncoder(std::abs(distance)) > std::abs(getAveragePosition(true))) {
+        std::cout << distanceToEncoder(distance)-getAveragePosition(true) << std::endl;
+        //handle timeout
+        if(timeout != -1) {
+            elapsedTime += 20;
+
+            if(elapsedTime >= timeout)
+                break;
+        }
+
         int s = speed * (distance<0?-1:1);
+        int t = inertialLock ? turnPid.calculate(gyro->get_rotation(), false) : 0; 
 
         if(slewrate>0 && slew<s) {
             s = (int)slew;
             slew += slewrate * (distance<0?-1:1);
         }
 
-        right->move(s);
-        left->move(s);
+        right->move(s + t);
+        left->move(s - t);
 
         pros::delay(20);
     }
@@ -130,14 +153,20 @@ void Chassis::Move(double distance, int speed, float slewrate) {
     left->brake();
 }
 
-void Chassis::TurnPid(int degrees, float speed_m) {
+void Chassis::TurnPid(int degrees, float speed_m, int disable) {
     gyro->tare_rotation();
+    double averageMotorSpeed = 99999;
 
-    while(std::abs(degrees - gyro->get_rotation()) > 3) {
-        double s = turnPid.calculate(degrees-gyro->get_rotation(), false) * speed_m;
+    while(std::abs(degrees - gyro->get_rotation()) > 6 || std::abs(averageMotorSpeed) > 1) {
+        std::cout << std::abs(degrees - gyro->get_rotation()) << std::endl;
+        double s = turnPid.calculate(degrees - gyro->get_rotation(), false) * speed_m;
 
-        right->move(-s);
-        left->move(s);
+        if(disable != 1)
+            right->move(-s);
+        if(disable != 0)
+            left->move(s);
+
+        averageMotorSpeed = average(right->get_actual_velocities());
 
         pros::delay(20);
     }
@@ -146,14 +175,16 @@ void Chassis::TurnPid(int degrees, float speed_m) {
     left->brake();
 }
 
-void Chassis::Turn(int degrees, int speed) {
+void Chassis::Turn(int degrees, int speed, int disable) {
     gyro->tare_rotation();
 
     while(std::abs(degrees - gyro->get_rotation()) > 3) {
         double s = speed * (degrees<0?-1:1);
 
-        right->move(-s);
-        left->move(s);
+        if(disable != 1)
+            right->move(-s);
+        if(disable != 0)
+            left->move(s);
 
         pros::delay(20);
     }
@@ -204,4 +235,11 @@ int Chassis::distanceToEncoder(double distance) {
         return (int)((distance / (2*PI*wheelRadius)) * 360);
     else
         return (int)distance;
+}
+
+double Chassis::average(std::vector<double> values) {
+    double sum = 0;
+    for(int i=0; i<values.size(); i++)
+        sum += values.at(i);
+    return sum / values.size();
 }
