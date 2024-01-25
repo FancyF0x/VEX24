@@ -22,8 +22,6 @@ void print_debug() {
 	lcd::initialize();
 
 	while(true) {
-		// lcd::set_text(1, "Climber position: " + std::to_string(climbMotor.get_position()));
-
 		delay(10);
 
 		lcd::clear();
@@ -32,8 +30,6 @@ void print_debug() {
 
 void initialize() {	
 	IntakeMotor.set_brake_mode(E_MOTOR_BRAKE_HOLD);
-	// climbMotor.set_brake_mode(E_MOTOR_BRAKE_HOLD);
-	// climbMotor.tare_position();
 
 	Task t(print_debug);
 }
@@ -83,6 +79,17 @@ void autonomous() {
 	runRightAwpAuton(); //TODO: MAKE AN AUTON SELECTOR
 }
 
+double expo(double value, double expo) {
+	bool negative = value < 0;
+
+	value /= 127;
+	value = pow(value, expo);
+	value *= value>0 && negative ? -1 : 1;
+	value *= 127;
+
+	return value;
+}
+
 void opcontrol() {
 	bool frontWingsDeployed = false;
 	bool backWingsDeployed = false;
@@ -99,7 +106,7 @@ void opcontrol() {
 		else {
 			double driveAmount = master.get_analog(E_CONTROLLER_ANALOG_LEFT_Y);
 			double turnAmount = master.get_analog(E_CONTROLLER_ANALOG_RIGHT_X);
-			driveChassis.DriveArcade(driveAmount, turnAmount); 
+			driveChassis.DriveArcade(driveAmount, expo(turnAmount, 3)); 
 		}
 
 		//intake
@@ -119,15 +126,6 @@ void opcontrol() {
 			backWingsDeployed = !backWingsDeployed;
 			backWings.set_value(backWingsDeployed);
 		}
-
-		//climber
-		// if(master.get_digital(E_CONTROLLER_DIGITAL_UP))
-		// 	climbMotor.move(-127);
-		// else if(master.get_digital(E_CONTROLLER_DIGITAL_DOWN))
-		// 	climbMotor.move(127);
-		// else
-		// 	climbMotor.brake();
-
 
 		delay(10);
 	}
