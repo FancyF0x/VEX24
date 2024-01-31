@@ -13,8 +13,10 @@ inline void runRightAwpAuton() {
     driveChassis.MovePid(500, 1, -1, true);
     driveChassis.TurnPid(37, 1.8, 0);
     driveChassis.Move(200, 60, -1, -1, true);
-    driveChassis.Move(-200, 60, -1, -1, true);
+    driveChassis.Move(-350, 40, -1, -1, true);
 
+    driveChassis.TurnPid(-10, 1);
+    /*
     frontWingsDown();
     pros::delay(100);
 
@@ -37,4 +39,5 @@ inline void runRightAwpAuton() {
     driveChassis.TurnPid(-45, 1);
 
     driveChassis.MovePid(2100, 1, 5, true);
+    */
 }
