@@ -20,10 +20,9 @@
 #define INTAKE_FOLD_1_PORT 16
 #define INTAKE_FOLD_2_PORT 18
 
-#define FLYWHEEL_LOW_1_PORT 11
-#define FLYWHEEL_LOW_2_PORT 13
-#define FLYWHEEL_HIGH_1_PORT 12
-#define FLYWHEEL_HIGH_2_PORT 14
+#define FLYWHEEL_1_PORT 13
+#define FLYWHEEL_2_PORT 11
+#define FLYWHEEL_3_PORT 12
 
 #define INTAKE_1_PORT 17
 #define INTAKE_2_PORT 19
@@ -50,10 +49,9 @@ extern pros::Motor intakeFold1;
 extern pros::Motor intakeFold2;
 extern pros::Motor_Group intakeFold;
 
-extern pros::Motor flywheelLow1;
-extern pros::Motor flywheelLow2;
-extern pros::Motor flywheelHigh1;
-extern pros::Motor flywheelHigh2;
+extern pros::Motor flywheel1;
+extern pros::Motor flywheel2;
+extern pros::Motor flywheel3;
 extern pros::Motor_Group flywheelMotors;
 
 extern pros::Motor intakeMotor1;
