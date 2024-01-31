@@ -6,35 +6,24 @@ inline void runRightAwpAuton() {
     rightMotors.set_brake_modes(pros::E_MOTOR_BRAKE_BRAKE);
 	leftMotors.set_brake_modes(pros::E_MOTOR_BRAKE_BRAKE);
 
-    backWingsDown();
-    pros::delay(200);
+    //pick up triball under bar and 
 
-    //push the triball with the wings
-    driveChassis.MovePid(500, 1, -1, true);
-    driveChassis.TurnPid(37, 1.8, 0);
-    driveChassis.Move(200, 60, -1, -1, true);
-    driveChassis.Move(-200, 60, -1, -1, true);
+    driveChassis.Move(4000, 90, 4, -1);
 
-    frontWingsDown();
-    pros::delay(100);
+    /*
+    startIntake();
+    driveChassis.MovePid(700, 0.6, 4, true);
+    driveChassis.MovePid(-1600, 0.6, 4, true);
+    driveChassis.TurnPid(-90, 0.6);
 
-    //score the tribal
-    driveChassis.Move(500, 100, -1, 1300, true);
+    //spit it out
+    startIntake(false);
+    driveChassis.MovePid(200, 1, 7, true);
+    stopIntake();
+    driveChassis.MovePid(-200, 1, 5, true);
 
-    frontWingsUp();
-    backWingsUp();
-
-    //start raising climber
-    // pros::Task c([]() {
-    //     climbMotor.move_absolute(4800, 100);
-    // });
-
-    driveChassis.MovePid(-200, 1, -1, true);
-    driveChassis.TurnPid(135, 1);
-
-    //move and then turn towards hang bar
-    driveChassis.MovePid(1130, 1, 5, true);
-    driveChassis.TurnPid(-45, 1);
-
-    driveChassis.MovePid(2100, 1, 5, true);
+    //turn back towards the match load triball and move
+    driveChassis.TurnPid(90, 1);
+    driveChassis.MovePid(3000, 1, 5, true);
+    */
 }
