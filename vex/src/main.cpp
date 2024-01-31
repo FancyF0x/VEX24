@@ -23,6 +23,7 @@ void print_debug() {
 
 	while(true) {
 		lcd::set_text(1, "Climber position: " + std::to_string(climbMotor.get_position()));
+		lcd::set_text(2, "Static imu: " + std::to_string(static_imu.get_rotation()));
 
 		delay(10);
 
@@ -71,8 +72,10 @@ void competition_initialize() {
 	delay(60);
 
 	imu.reset();
+	static_imu.reset();
 	delay(3000);
 	imu.tare_rotation();
+	static_imu.tare();
 
 	master.clear();
 	delay(60);

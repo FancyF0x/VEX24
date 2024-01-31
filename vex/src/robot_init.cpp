@@ -23,6 +23,7 @@ pros::Motor IntakeMotor = pros::Motor(INTAKE_PORT);
 pros::Motor climbMotor = pros::Motor(CLIMB_MOTOR_PORT);
 
 pros::Imu imu = pros::Imu(INERTIAL_PORT);
+pros::Imu static_imu = pros::Imu(STATIC_INERTIAL_PORT);
 
 pros::ADIDigitalOut frontWings = pros::ADIDigitalOut(FRONT_WINGS_PORT);
 pros::ADIDigitalOut backWings = pros::ADIDigitalOut(BACK_WINGS_PORT);

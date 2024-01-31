@@ -12,6 +12,7 @@
 #define RIGHT_MOTOR_4_PORT 4
 
 #define INERTIAL_PORT 5
+#define STATIC_INERTIAL_PORT 17 //named static because it never get's reset once the bot starts running
 
 #define INTAKE_PORT 6
 
@@ -46,6 +47,7 @@ extern pros::Motor_Group rightMotors;
 extern pros::Motor climbMotor;
 
 extern pros::Imu imu;
+extern pros::Imu static_imu;
 
 extern pros::ADIDigitalOut frontWings;
 extern pros::ADIDigitalOut backWings;
