@@ -22,9 +22,9 @@ pros::Motor intakeFold1 = pros::Motor(INTAKE_FOLD_1_PORT);
 pros::Motor intakeFold2 = pros::Motor(INTAKE_FOLD_2_PORT, true);
 pros::Motor_Group intakeFold = pros::Motor_Group({intakeFold1, intakeFold2});
 
-pros::Motor flywheel1 = pros::Motor(FLYWHEEL_1_PORT, true);
-pros::Motor flywheel2 = pros::Motor(FLYWHEEL_2_PORT, true);
-pros::Motor flywheel3 = pros::Motor(FLYWHEEL_3_PORT);
+pros::Motor flywheel1 = pros::Motor(FLYWHEEL_1_PORT);
+pros::Motor flywheel2 = pros::Motor(FLYWHEEL_2_PORT);
+pros::Motor flywheel3 = pros::Motor(FLYWHEEL_3_PORT, true);
 
 pros::Motor_Group flywheelMotors = pros::Motor_Group({flywheel1, flywheel2, flywheel3});
 

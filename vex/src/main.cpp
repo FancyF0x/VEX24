@@ -96,10 +96,10 @@ void opcontrol() {
 		driveChassis.DriveTank(leftMove, rightMove);
 
 		if(master.get_digital(E_CONTROLLER_DIGITAL_R1)) {
-			intakeMotors.move(25);
+			intakeMotors.move(50);
 		}
 		else if(master.get_digital(E_CONTROLLER_DIGITAL_R2)) {
-			intakeMotors.move(-25);
+			intakeMotors.move(-50);
 		}
 		else {
 			intakeMotors.brake();
@@ -108,11 +108,9 @@ void opcontrol() {
 		//intake foldding
 		if(master.get_digital(E_CONTROLLER_DIGITAL_L1)){
 			intakeFold.move(90);
-			intakeMotors.move(25);
 		}
 		else if(master.get_digital(E_CONTROLLER_DIGITAL_L2)){
 			intakeFold.move(-90);
-			intakeMotors.brake();
 		}
 		else {
 			intakeFold.brake();
@@ -130,30 +128,15 @@ void opcontrol() {
 			flywheelMotors.brake();
 		}
 
-
-		
-
-		// //cata
-		// if(master.get_digital_new_press(E_CONTROLLER_DIGITAL_X)) {
-		// 	std::cout << "X button pressed" << std::endl;
-		// 	Task f {[=] {
-		// 		cata.fire();
-		// 	}};
+		//shooting combo
+		// if(master.get_digital(E_CONTROLLER_DIGITAL_UP)){
+		// 	intakeMotors.move(50);
+		// 	flywheelMotors.move(127);
 		// }
-
-		// if(master.get_digital_new_press(E_CONTROLLER_DIGITAL_B)) {
-		// 	Task f {[=] {
-		// 		cata.load();
-		// 	}};
+		// else{
+		// 	intakeMotors.brake();
+		// 	flywheelMotors.brake();
 		// }
-
-		// //temporary manual override
-		// if(master.get_digital(E_CONTROLLER_DIGITAL_Y)) {
-		// 	cata.stop = true; //stops any while loop that's currently running in the cata
-		// 	cata_motors.move(127);
-		// }
-		// else if(!cata.firing)
-		// 	cata_motors.brake();
 
 		delay(10);
 	}
