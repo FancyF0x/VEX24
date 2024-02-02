@@ -10,7 +10,7 @@
 #include <iostream> // for debugging
 
 //autons:
-#include "autons/AWPRight.cpp"
+#include "autons/AWPFar.cpp"
 
 AutonSelector selector(1);
 
@@ -76,7 +76,7 @@ void competition_initialize() {
 }
 
 void autonomous() {
-	runRightAwpAuton(); //TODO: MAKE AN AUTON SELECTOR
+	runFarAwpAuton(); //TODO: MAKE AN AUTON SELECTOR
 }
 
 double expo(double value, double expo) {
