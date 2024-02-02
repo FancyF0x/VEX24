@@ -5,14 +5,11 @@
 #include "robot.h"
 
 #include "library/IntakeController.h"
-#include "library/AutonSelector.h"
 
 #include <iostream> // for debugging
 
 //autons:
 #include "autons/AWPRight.cpp"
-
-AutonSelector selector(1);
 
 using namespace pros;
 
