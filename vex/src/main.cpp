@@ -106,13 +106,13 @@ void opcontrol() {
 		else {
 			double driveAmount = master.get_analog(E_CONTROLLER_ANALOG_LEFT_Y);
 			double turnAmount = master.get_analog(E_CONTROLLER_ANALOG_RIGHT_X);
-			driveChassis.DriveArcade(driveAmount, expo(turnAmount, 3)); 
+			driveChassis.DriveArcade(driveAmount, expo(turnAmount, 3)/2); 
 		}
 
 		//intake
-		if(master.get_digital(E_CONTROLLER_DIGITAL_R1))
+		if(master.get_digital(E_CONTROLLER_DIGITAL_R2))
 			IntakeMotor.move(127);
-		else if(master.get_digital(E_CONTROLLER_DIGITAL_R2))
+		else if(master.get_digital(E_CONTROLLER_DIGITAL_R1))
 			IntakeMotor.move(-127);
 		else
 			IntakeMotor.brake();
