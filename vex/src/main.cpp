@@ -1,4 +1,4 @@
-#define KYLE_DRIVING false
+#define ONE_STICK false
 
 #include "main.h"
 #include "pros/misc.h"
@@ -31,7 +31,7 @@ void print_debug() {
 }
 
 void initialize() {	
-	IntakeMotor.set_brake_mode(E_MOTOR_BRAKE_HOLD);
+	IntakeMotor.set_brake_mode(E_MOTOR_BRAKE_BRAKE);
 
 	Task t(print_debug);
 }
@@ -91,22 +91,23 @@ void opcontrol() {
 
 	while(true) {
 		//driving
-		if(KYLE_DRIVING) {
+		if(ONE_STICK){
+			double leftMove = master.get_analog(E_CONTROLLER_ANALOG_LEFT_Y);
+			double rightMove = master.get_analog(E_CONTROLLER_ANALOG_LEFT_X);
+			driveChassis.DriveArcade(leftMove, rightMove);	
+		}
+		else{
 			double leftAmount = master.get_analog(E_CONTROLLER_ANALOG_LEFT_Y);
-			double rightAmount = master.get_analog(E_CONTROLLER_ANALOG_RIGHT_Y);
-			driveChassis.DriveTank(leftAmount, rightAmount);
+			double rightAmount = master.get_analog(E_CONTROLLER_ANALOG_RIGHT_X);
+			driveChassis.DriveArcade(leftAmount, rightAmount);
 		}
-		else {
-			double driveAmount = master.get_analog(E_CONTROLLER_ANALOG_LEFT_Y);
-			double turnAmount = master.get_analog(E_CONTROLLER_ANALOG_RIGHT_X);
-			driveChassis.DriveArcade(driveAmount, turnAmount); 
-		}
+		
 
 		//intake
 		if(master.get_digital(E_CONTROLLER_DIGITAL_R1))
 			IntakeMotor.move(127);
 		else if(master.get_digital(E_CONTROLLER_DIGITAL_R2))
-			IntakeMotor.move(-127);
+			IntakeMotor.move(-70);
 		else
 			IntakeMotor.brake();
 
