@@ -1,3 +1,5 @@
+#define ONE_STICK false
+
 #include "main.h"
 #include "pros/misc.h"
 #include "robot.h"
@@ -82,9 +84,16 @@ void opcontrol() {
 
 	while(true) {
 		//driving
-		double leftMove = -master.get_analog(E_CONTROLLER_ANALOG_LEFT_Y);
-		double rightMove = master.get_analog(E_CONTROLLER_ANALOG_LEFT_X);
-		driveChassis.DriveArcade(leftMove, rightMove);
+		if(ONE_STICK){
+			double leftMove = master.get_analog(E_CONTROLLER_ANALOG_LEFT_Y);
+			double rightMove = master.get_analog(E_CONTROLLER_ANALOG_LEFT_X);
+			driveChassis.DriveArcade(leftMove, rightMove);	
+		}
+		else{
+			double leftAmount = master.get_analog(E_CONTROLLER_ANALOG_LEFT_Y);
+			double rightAmount = master.get_analog(E_CONTROLLER_ANALOG_RIGHT_X);
+			driveChassis.DriveArcade(leftAmount, rightAmount);
+		}
 
 		
 
