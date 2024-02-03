@@ -84,10 +84,7 @@ void autonomous() {
 }
 
 void opcontrol() {
-	// cata.calibrate();
-	// Task r {[=] {
-	// 	cata.load();
-	// }};
+	bool isFlyWheelSpinning = false;
 
 	while(true) {
 		//driving
@@ -118,15 +115,19 @@ void opcontrol() {
 
 		//flywheel
 		if(master.get_digital(E_CONTROLLER_DIGITAL_X)){
+			// isFlyWheelSpinning = !isFlyWheelSpinning;
 			flywheelMotors.move(127);
 		}
 		else if(master.get_digital(E_CONTROLLER_DIGITAL_B)){
 			flywheelMotors.move(-127);
-
 		}
 		else{
 			flywheelMotors.brake();
 		}
+		// if(isFlyWheelSpinning){
+		// 	flywheelMotors.move(127);
+		// }
+
 
 		//shooting combo
 		// if(master.get_digital(E_CONTROLLER_DIGITAL_UP)){
