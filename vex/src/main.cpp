@@ -90,7 +90,7 @@ void opcontrol() {
 			driveChassis.DriveArcade(leftMove, rightMove);	
 		}
 		else{
-			double leftAmount = master.get_analog(E_CONTROLLER_ANALOG_LEFT_Y);
+			double leftAmount = -master.get_analog(E_CONTROLLER_ANALOG_LEFT_Y);
 			double rightAmount = master.get_analog(E_CONTROLLER_ANALOG_RIGHT_X);
 			driveChassis.DriveArcade(leftAmount, rightAmount);
 		}
