@@ -4,12 +4,12 @@
 
 inline void runRightAwpAuton() {
     //set the start position of the robot
-    static_imu.set_rotation(-111);
+    // static_imu.set_rotation(-111);
 
     rightMotors.set_brake_modes(pros::E_MOTOR_BRAKE_BRAKE);
 	leftMotors.set_brake_modes(pros::E_MOTOR_BRAKE_BRAKE);
 
-    backWingsDown();
+    // backWingsDown();
     pros::delay(200);
 
     //push the triball with the wings
@@ -23,7 +23,7 @@ inline void runRightAwpAuton() {
     frontWingsDown();
 
     driveChassis.Move(200, 60, -1, -1, true);
-    backWingsUp();
+    // backWingsUp();
     driveChassis.Move(-350, 40, -1, -1, true);
 
     frontWingsUp();
@@ -40,16 +40,15 @@ inline void runRightAwpAuton() {
     driveChassis.TurnPid(125, 1);
 
     //realign to field
-    driveChassis.TurnPid(45-static_imu.get_rotation(), 1);
+    // driveChassis.TurnPid(45-static_imu.get_rotation(), 1);
     
     //start raising hang bar
     pros::Task([]() {
-        climbMotor.move_absolute(4200, 300);
     });
 
     //drive to align with hanging bar
     driveChassis.MovePid(900, 1, 4, true);
 
-    driveChassis.TurnPid(-static_imu.get_rotation(), 1);
+    // driveChassis.TurnPid(-static_imu.get_rotation(), 1);
     driveChassis.Move(2500, 80, 6, 5000);
 }

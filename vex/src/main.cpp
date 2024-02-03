@@ -22,8 +22,7 @@ void print_debug() {
 	lcd::initialize();
 
 	while(true) {
-		lcd::set_text(1, "Climber position: " + std::to_string(climbMotor.get_position()));
-		lcd::set_text(2, "Static imu: " + std::to_string(static_imu.get_rotation()));
+		// lcd::set_text(2, "Static imu: " + std::to_string(static_imu.get_rotation()));
 
 		delay(10);
 
@@ -33,8 +32,6 @@ void print_debug() {
 
 void initialize() {	
 	IntakeMotor.set_brake_mode(E_MOTOR_BRAKE_HOLD);
-	climbMotor.set_brake_mode(E_MOTOR_BRAKE_HOLD);
-	climbMotor.tare_position();
 
 	Task t(print_debug);
 }
@@ -72,10 +69,10 @@ void competition_initialize() {
 	delay(60);
 
 	imu.reset();
-	static_imu.reset();
+	// static_imu.reset();
 	delay(3000);
 	imu.tare_rotation();
-	static_imu.tare();
+	// static_imu.tare();
 
 	master.clear();
 	delay(60);
@@ -118,18 +115,10 @@ void opcontrol() {
 			frontWingsDeployed = !frontWingsDeployed;
 			frontWings.set_value(frontWingsDeployed);
 		}
-		if(master.get_digital_new_press(E_CONTROLLER_DIGITAL_L2)) {
-			backWingsDeployed = !backWingsDeployed;
-			backWings.set_value(backWingsDeployed);
-		}
-
-		//climber
-		if(master.get_digital(E_CONTROLLER_DIGITAL_UP))
-			climbMotor.move(-127);
-		else if(master.get_digital(E_CONTROLLER_DIGITAL_DOWN))
-			climbMotor.move(127);
-		else
-			climbMotor.brake();
+		// if(master.get_digital_new_press(E_CONTROLLER_DIGITAL_L2)) {
+		// 	backWingsDeployed = !backWingsDeployed;
+		// 	backWings.set_value(backWingsDeployed);
+		// }
 
 
 		delay(10);
