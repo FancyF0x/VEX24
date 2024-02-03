@@ -1,9 +1,9 @@
 #pragma once
 
-void frontWingsDown();
-void frontWingsUp();
-void backWingsDown();
-void backWingsUp();
+void frontWingsOut();
+void frontWingsIn();
+void backWingsIn();
+void backWingsOut();
 
 void startIntake(bool in=true);
 void stopIntake();

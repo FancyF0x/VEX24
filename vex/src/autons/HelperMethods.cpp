@@ -2,19 +2,19 @@
 #include "api.h"
 #include "HelperMethods.h"
 
-void frontWingsDown() {
+void frontWingsOut() {
     frontWings.set_value(1);
 }
 
-void frontWingsUp() {
+void frontWingsIn() {
     frontWings.set_value(0);
 }
 
-void backWingsDown() {
+void backWingsOut() {
     backWings.set_value(1);
 }
 
-void backWingsUp() {
+void backWingsIn() {
     backWings.set_value(0);
 }
 

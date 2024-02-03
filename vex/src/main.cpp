@@ -64,8 +64,10 @@ void competition_initialize() {
 	delay(60);
 
 	imu.reset();
+	static_imu.reset();
 	delay(3000);
 	imu.tare_rotation();
+	static_imu.tare();
 
 	master.clear();
 	delay(60);

@@ -12,6 +12,7 @@
 #define RIGHT_MOTOR_4_PORT 17
 
 #define INERTIAL_PORT 19
+#define STATIC_INERTIAL_PORT 10
 
 #define INTAKE_PORT 20
 
@@ -46,6 +47,7 @@ extern pros::Motor_Group rightMotors;
 // extern pros::Motor climbMotor;
 
 extern pros::Imu imu;
+extern pros::Imu static_imu;
 
 extern pros::ADIDigitalOut frontWings;
 extern pros::ADIDigitalOut backWings;
