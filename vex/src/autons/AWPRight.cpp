@@ -10,7 +10,7 @@ inline void runRightAwpAuton() {
     rightMotors.set_brake_modes(pros::E_MOTOR_BRAKE_BRAKE);
 	leftMotors.set_brake_modes(pros::E_MOTOR_BRAKE_BRAKE);
 
-    backWingsDown();
+    backWingsOut();
     pros::delay(200);
 
     //push the triball with the wings
@@ -21,13 +21,13 @@ inline void runRightAwpAuton() {
     driveChassis.Move(-300, 127, -1, -1, true);
 
     //push the triball forward using the front wings
-    frontWingsDown();
+    frontWingsOut();
 
     driveChassis.Move(200, 60, -1, -1, true);
-    backWingsUp();
+    backWingsIn();
     driveChassis.Move(-350, 40, -1, -1, true);
 
-    frontWingsUp();
+    frontWingsIn();
     driveChassis.TurnPid(-40, 1);
 
     driveChassis.Move(350, 100, 6, 2000, false);
@@ -62,7 +62,7 @@ inline void runRightAwpAuton_Kyle() {
     rightMotors.set_brake_modes(pros::E_MOTOR_BRAKE_BRAKE);
 	leftMotors.set_brake_modes(pros::E_MOTOR_BRAKE_BRAKE);
 
-    backWingsDown();
+    backWingsOut();
     pros::delay(200);
 
     //push the triball with the wings
@@ -73,13 +73,13 @@ inline void runRightAwpAuton_Kyle() {
     driveChassis.Move(-300, 127, -1, -1, true);
 
     //push the triball forward using the front wings
-    frontWingsDown();
+    frontWingsOut();
 
     driveChassis.Move(200, 60, -1, -1, true);
-    backWingsUp();
+    backWingsIn();
     driveChassis.Move(-350, 40, -1, -1, true);
 
-    frontWingsUp();
+    frontWingsIn();
     driveChassis.TurnPid(-40, 1);
 
     driveChassis.Move(280, 100, 6, 2000, false);
@@ -100,7 +100,7 @@ inline void runRightAwpAuton_Kyle() {
     driveChassis.Move(-100, 90, -1, -1, false);
 
     //match load
-    backWingsDown();
+    backWingsOut();
     pros::delay(1500);
     driveChassis.Turn(-9, 90);
     pros::delay(1500);
@@ -119,7 +119,7 @@ inline void runRightAwpAuton_Kyle() {
     driveChassis.Turn(9, 90);
     pros::delay(1500);
 
-    backWingsUp();
+    backWingsIn();
 
     //go to elevation
     driveChassis.Move(-150, 90, -1, -1, false);

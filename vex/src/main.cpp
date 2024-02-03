@@ -1,5 +1,6 @@
 #define KYLE_DRIVING false
 #define KYLE_AUTON false
+#define SKILLS false
 
 #include "main.h"
 #include "pros/misc.h"
@@ -12,8 +13,7 @@
 
 //autons:
 #include "autons/AWPRight.cpp"
-
-AutonSelector selector(1);
+#include "autons/Skills.cpp"
 
 using namespace pros;
 
@@ -84,10 +84,14 @@ void competition_initialize() {
 }
 
 void autonomous() {
-	if(KYLE_AUTON)
-		runRightAwpAuton_Kyle(); //TODO: MAKE AN AUTON SELECTOR
-	else
-		runRightAwpAuton();
+	if(SKILLS)
+		run_skills();
+	else {
+		if(KYLE_AUTON)
+			runRightAwpAuton_Kyle(); //TODO: MAKE AN AUTON SELECTOR
+		else
+			runRightAwpAuton();
+	}
 }
 
 void opcontrol() {
