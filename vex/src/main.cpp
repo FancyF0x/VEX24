@@ -7,6 +7,7 @@
 #include "library/IntakeController.h"
 
 #include <iostream> // for debugging
+#include <vector>
 
 //autons:
 #include "autons/AWPRight.cpp"
@@ -14,6 +15,7 @@
 using namespace pros;
 
 bool initializing = false;
+double MAX_ACCEL = 130; //edit how fast the bot is allowed to accelerate to avoid tipping
 
 void print_debug() {
 	lcd::initialize();
@@ -89,6 +91,25 @@ double expo(double value, double expo) {
 	return value;
 }
 
+double get_avr_speed() {
+	std::vector<double> right = rightMotors.get_actual_velocities();
+	std::vector<double> left = leftMotors.get_actual_velocities();
+
+	double r_avr = 0;
+	for(int i=0; i<right.size(); i++) {
+		r_avr += right.at(i);
+	}
+	r_avr /= right.size();
+
+	double l_avr = 0;
+	for(int i=0; i<left.size(); i++) {
+		l_avr += left.at(i);
+	}
+	l_avr /= left.size();
+
+	return (r_avr+l_avr) / 2;
+}
+
 void opcontrol() {
 	bool frontWingsDeployed = false;
 	bool backWingsDeployed = false;
@@ -105,6 +126,14 @@ void opcontrol() {
 		else {
 			double driveAmount = master.get_analog(E_CONTROLLER_ANALOG_LEFT_Y);
 			double turnAmount = master.get_analog(E_CONTROLLER_ANALOG_RIGHT_X);
+
+			//speed control (prevent tipping)
+			/*
+			if(std::abs(get_avr_speed() - driveAmount) > MAX_ACCEL) {
+				driveAmount /= 2;
+			}
+			*/
+
 			driveChassis.DriveArcade(driveAmount, expo(turnAmount, 3)/2); 
 		}
 
