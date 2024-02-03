@@ -13,6 +13,6 @@ inline void runRightAwpAuton() {
     }
 
     //push the triball with the wings
-    driveChassis.MovePid(500, 1, -1, true);
-    driveChassis.TurnPid(50, 1.3, 0);
+    // driveChassis.MovePid(500, 1, -1, true);
+    // driveChassis.TurnPid(50, 1.3, 0);
 }

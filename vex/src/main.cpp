@@ -15,9 +15,6 @@ PID drivePid(1, 0, 0);
 PID turnPid(1, 0, 0);
 Chassis driveChassis(leftMotors, rightMotors, imu, drivePid, turnPid);
 
-//PID cataPid(2, 0, 0);
-// Catapult cata(cata_motors, cataSensor);
-
 AutonSelector selector(1);
 
 using namespace pros;
@@ -38,9 +35,6 @@ void initialize() {
 
 	intakeFold.set_brake_modes(E_MOTOR_BRAKE_BRAKE);
 	
-	//calibrate cata
-	//cata.calibrate();
-	//cata.load();
 }
 
 void disabled() {}
@@ -88,16 +82,18 @@ void opcontrol() {
 
 	while(true) {
 		//driving
-		double leftMove = master.get_analog(E_CONTROLLER_ANALOG_LEFT_Y);
-		double rightMove = master.get_analog(E_CONTROLLER_ANALOG_RIGHT_X);
+		double leftMove = -master.get_analog(E_CONTROLLER_ANALOG_LEFT_Y);
+		double rightMove = master.get_analog(E_CONTROLLER_ANALOG_LEFT_X);
 		driveChassis.DriveArcade(leftMove, rightMove);
+
+		
 
 		if(master.get_digital(E_CONTROLLER_DIGITAL_R1)) {
 			intakeMotors.move(50);
 		}
-		else if(master.get_digital(E_CONTROLLER_DIGITAL_R2)) {
-			intakeMotors.move(-50);
-		}
+		// else if(master.get_digital(E_CONTROLLER_DIGITAL_R2)) {
+		// 	intakeMotors.move(-50);
+		// }
 		else {
 			intakeMotors.brake();
 		}
@@ -114,29 +110,18 @@ void opcontrol() {
 		}
 
 		//flywheel
-		if(master.get_digital(E_CONTROLLER_DIGITAL_X)){
+		if(master.get_digital(E_CONTROLLER_DIGITAL_R2)){
 			// isFlyWheelSpinning = !isFlyWheelSpinning;
 			flywheelMotors.move(90);
 		}
-		else if(master.get_digital(E_CONTROLLER_DIGITAL_B)){
-			flywheelMotors.move(-90);
-		}
+		// else if(master.get_digital(E_CONTROLLER_DIGITAL_B)){
+		// 	flywheelMotors.move(-90);
+		// }
 		else{
 			flywheelMotors.brake();
 		}
 		// if(isFlyWheelSpinning){
 		// 	flywheelMotors.move(127);
-		// }
-
-
-		//shooting combo
-		// if(master.get_digital(E_CONTROLLER_DIGITAL_UP)){
-		// 	intakeMotors.move(50);
-		// 	flywheelMotors.move(127);
-		// }
-		// else{
-		// 	intakeMotors.brake();
-		// 	flywheelMotors.brake();
 		// }
 
 		delay(10);
