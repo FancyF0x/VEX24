@@ -1,4 +1,5 @@
 #define KYLE_DRIVING false
+#define KYLE_AUTON false
 
 #include "main.h"
 #include "pros/misc.h"
@@ -83,7 +84,10 @@ void competition_initialize() {
 }
 
 void autonomous() {
-	runRightAwpAuton(); //TODO: MAKE AN AUTON SELECTOR
+	if(KYLE_AUTON)
+		runRightAwpAuton_Kyle(); //TODO: MAKE AN AUTON SELECTOR
+	else
+		runRightAwpAuton();
 }
 
 void opcontrol() {
