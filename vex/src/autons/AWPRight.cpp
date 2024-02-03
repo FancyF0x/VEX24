@@ -36,20 +36,24 @@ inline void runRightAwpAuton() {
     driveChassis.Move(240, 100, -1, 1000, false);
     driveChassis.Move(-300, 127, 5, -1, true);
 
-    //turn away from goal
-    driveChassis.TurnPid(125, 1);
+    //turn to align with corner
+    driveChassis.TurnPid(-45, 1);
+    driveChassis.Move(-300, 127, -1, -1, false);
 
-    //realign to field
-    driveChassis.TurnPid(45-static_imu.get_rotation(), 1);
+    // //turn away from goal
+    // driveChassis.TurnPid(125, 1);
+
+    // //realign to field
+    // driveChassis.TurnPid(45-static_imu.get_rotation(), 1);
     
-    //start raising hang bar
-    pros::Task([]() {
-        climbMotor.move_absolute(4200, 300);
-    });
+    // //start raising hang bar
+    // pros::Task([]() {
+    //     climbMotor.move_absolute(4200, 300);
+    // });
 
-    //drive to align with hanging bar
-    driveChassis.MovePid(900, 1, 4, true);
+    // //drive to align with hanging bar
+    // driveChassis.MovePid(900, 1, 4, true);
 
-    driveChassis.TurnPid(-static_imu.get_rotation(), 1);
-    driveChassis.Move(2500, 80, 6, 5000);
+    // driveChassis.TurnPid(-static_imu.get_rotation(), 1);
+    // driveChassis.Move(2500, 80, 6, 5000);
 }
