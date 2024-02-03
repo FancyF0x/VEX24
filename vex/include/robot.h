@@ -22,8 +22,8 @@
 #define LEFT_MOTOR_4_PORT 9
 
 
-#define FRONT_WINGS_PORT 'A'
-// #define BACK_WINGS_PORT 'B'
+#define FRONT_WINGS_PORT 'B'
+#define BACK_WINGS_PORT 'C'
 
 
 extern pros::Controller master;
@@ -47,7 +47,7 @@ extern pros::Imu imu;
 // extern pros::Imu static_imu;
 
 extern pros::ADIDigitalOut frontWings;
-// extern pros::ADIDigitalOut backWings;
+extern pros::ADIDigitalOut backWings;
 
 extern PID drivePid;
 extern PID turnPid;

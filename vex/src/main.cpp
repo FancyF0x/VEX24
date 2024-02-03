@@ -115,10 +115,10 @@ void opcontrol() {
 			frontWingsDeployed = !frontWingsDeployed;
 			frontWings.set_value(frontWingsDeployed);
 		}
-		// if(master.get_digital_new_press(E_CONTROLLER_DIGITAL_L2)) {
-		// 	backWingsDeployed = !backWingsDeployed;
-		// 	backWings.set_value(backWingsDeployed);
-		// }
+		if(master.get_digital_new_press(E_CONTROLLER_DIGITAL_L2)) {
+			backWingsDeployed = !backWingsDeployed;
+			backWings.set_value(backWingsDeployed);
+		}
 
 
 		delay(10);
