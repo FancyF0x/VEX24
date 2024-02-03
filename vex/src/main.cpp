@@ -105,7 +105,7 @@ void opcontrol() {
 		}
 		else {
 			double driveAmount = master.get_analog(E_CONTROLLER_ANALOG_LEFT_Y);
-			double turnAmount = master.get_analog(E_CONTROLLER_ANALOG_RIGHT_X);
+			double turnAmount = master.get_analog(E_CONTROLLER_ANALOG_RIGHT_X)/1.5;
 			driveChassis.DriveArcade(driveAmount, turnAmount); 
 		}
 
