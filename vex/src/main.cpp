@@ -90,7 +90,7 @@ void opcontrol() {
 			driveChassis.DriveArcade(leftMove, rightMove);	
 		}
 		else{
-			double leftAmount = -master.get_analog(E_CONTROLLER_ANALOG_LEFT_Y);
+			double leftAmount = master.get_analog(E_CONTROLLER_ANALOG_LEFT_Y);
 			double rightAmount = master.get_analog(E_CONTROLLER_ANALOG_RIGHT_X);
 			driveChassis.DriveArcade(leftAmount, rightAmount);
 		}
@@ -98,10 +98,10 @@ void opcontrol() {
 		
 
 		if(master.get_digital(E_CONTROLLER_DIGITAL_R1)) {
-			intakeMotors.move(50);
+			intakeMotors.move(90);
 		}
 		// else if(master.get_digital(E_CONTROLLER_DIGITAL_R2)) {
-		// 	intakeMotors.move(-50);
+		// 	intakeMotors.move(-90);
 		// }
 		else {
 			intakeMotors.brake();
@@ -121,11 +121,11 @@ void opcontrol() {
 		//flywheel
 		if(master.get_digital(E_CONTROLLER_DIGITAL_R2)){
 			// isFlyWheelSpinning = !isFlyWheelSpinning;
-			flywheelMotors.move(90);
+			flywheelMotors.move(127);
 		}
-		// else if(master.get_digital(E_CONTROLLER_DIGITAL_B)){
-		// 	flywheelMotors.move(-90);
-		// }
+		else if(master.get_digital(E_CONTROLLER_DIGITAL_DOWN)){
+			flywheelMotors.move(-90);
+		}
 		else{
 			flywheelMotors.brake();
 		}
