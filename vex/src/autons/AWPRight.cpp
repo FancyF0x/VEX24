@@ -13,7 +13,10 @@ inline void runRightAwpAuton() {
     pros::delay(200);
 
     //push the triball with the wings
-    driveChassis.MovePid(1000, 1, -1, true);
+    driveChassis.MovePid(-1000, 1, -1, true);
+
+    driveChassis.MovePid(500, 1, -1, true);
+
     // driveChassis.TurnPid(50, 1.3, 0);
 
     // driveChassis.Move(300, 127, -1, -1, true);
