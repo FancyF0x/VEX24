@@ -51,7 +51,7 @@ inline void runRightAwpAuton() {
     //drive to align with hanging bar
     driveChassis.MovePid(900, 1, 4, true);
 
-    driveChassis.TurnPid(-static_imu.get_rotation(), 1);
+    driveChassis.TurnPid(5-static_imu.get_rotation(), 1, 0);
     driveChassis.Move(2500, 80, 6, 5000);
 }
 
