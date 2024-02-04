@@ -85,7 +85,7 @@ void opcontrol() {
 	while(true) {
 		//driving
 		if(ONE_STICK){
-			double leftMove = master.get_analog(E_CONTROLLER_ANALOG_LEFT_Y);
+			double leftMove = -master.get_analog(E_CONTROLLER_ANALOG_LEFT_Y);
 			double rightMove = master.get_analog(E_CONTROLLER_ANALOG_LEFT_X);
 			driveChassis.DriveArcade(leftMove, rightMove);	
 		}
@@ -96,7 +96,7 @@ void opcontrol() {
 		}
 
 		
-
+		//intake
 		if(master.get_digital(E_CONTROLLER_DIGITAL_R1)) {
 			intakeMotors.move(90);
 		}
@@ -123,7 +123,7 @@ void opcontrol() {
 			// isFlyWheelSpinning = !isFlyWheelSpinning;
 			flywheelMotors.move(127);
 		}
-		else if(master.get_digital(E_CONTROLLER_DIGITAL_DOWN)){
+		else if(master.get_digital(E_CONTROLLER_DIGITAL_B)){
 			flywheelMotors.move(-90);
 		}
 		else{
