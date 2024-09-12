@@ -87,27 +87,10 @@ void AutonSelector::iterate()
 //display the current auton on the remote screen
 void AutonSelector::display_autons() 
 {
-  //get the lengths of each string
-  int one = AutonSelector::autons[AutonSelector::selected].length();
-  int two = AutonSelector::descriptions[AutonSelector::selected][0].length();
-  int three = AutonSelector::descriptions[AutonSelector::selected][1].length();
-
-  //creating the character arrays
-  char oneArray[one + 1];
-  char twoArray[two + 1];
-  char threeArray[three + 1];
-
-  //copying the strings to the char arrays
-  std::strcpy(oneArray, AutonSelector::autons[AutonSelector::selected].c_str());
-  std::strcpy(twoArray, AutonSelector::descriptions[AutonSelector::selected][0].c_str());
-  std::strcpy(threeArray, AutonSelector::descriptions[AutonSelector::selected][1].c_str());
-
-  master.print(0, 0, oneArray);
-  pros::delay(50);
-  master.print(1, 0, twoArray);
-  pros::delay(50);
-  master.print(2, 0, threeArray);
-  pros::delay(50);
-
-  master.clear();
+  master.set_text(0, 0, AutonSelector::autons[AutonSelector::selected].c_str());
+  pros::delay(60);
+  master.set_text(1, 0, AutonSelector::descriptions[AutonSelector::selected][0].c_str());
+  pros::delay(60);
+  master.set_text(2, 0, AutonSelector::descriptions[AutonSelector::selected][1].c_str());
+  pros::delay(60);
 }

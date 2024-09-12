@@ -1,122 +1,117 @@
+#define KYLE_DRIVING false
+#define KYLE_AUTON false
+#define SKILLS false
+
 #include "main.h"
+#include "pros/misc.h"
 #include "robot.h"
 
-#include "library/CatapultController.h"
-#include "library/ChassisController.h"
 #include "library/IntakeController.h"
 #include "library/AutonSelector.h"
 
 #include <iostream> // for debugging
 
+//autons:
 #include "autons/AWPRight.cpp"
-
-PID drivePid(1, 0, 0);
-PID turnPid(1, 0, 0);
-Chassis driveChassis(leftMotors, rightMotors, imu, drivePid, turnPid);
-
-//PID cataPid(2, 0, 0);
-Catapult cata(cata_motors, cataSensor);
-
-AutonSelector selector(1);
+#include "autons/Skills.cpp"
 
 using namespace pros;
 
-//to keep track of whether or not the bot is folded and how far the motors have to move to folds
-bool folded = false;
 bool initializing = false;
-const int FOLDED_DISTANCE = -450;
 
 void print_debug() {
 	lcd::initialize();
-	int line = 0;
 
 	while(true) {
-		line = 0;
-		lcd::set_text(line++, "Cata rotation: " + std::to_string(cataSensor.get_position()));
-		lcd::set_text(line++, "Cata calibrating: " + std::to_string(cata.calibrating));
-		lcd::set_text(line++, "Cata loaded: " + std::to_string(cata.is_loaded));
-		lcd::set_text(line++, "Cata loading: " + std::to_string(cata.loading));
-		lcd::set_text(line++, "Intake fold 1 pos: " + std::to_string(intakeFold1.get_position()));
-		lcd::set_text(line++, "Cata firing: " + std::to_string(cata.firing));
-		lcd::set_text(line++, "Cata temp: " + std::to_string(cata_motors.get_temperatures()[0]));
+		lcd::set_text(1, "Climber position: " + std::to_string(climbMotor.get_position()));
+		lcd::set_text(2, "Static imu: " + std::to_string(static_imu.get_rotation()));
 
-		delay(20);
+		delay(10);
 
 		lcd::clear();
 	}
 }
 
 void initialize() {	
-	Task t(print_debug);
-
 	IntakeMotor.set_brake_mode(E_MOTOR_BRAKE_HOLD);
+	climbMotor.set_brake_mode(E_MOTOR_BRAKE_HOLD);
+	climbMotor.tare_position();
 
-	cata_motors.set_gearing(E_MOTOR_GEAR_100);
-	//cata_motors.set_brake_modes(E_MOTOR_BRAKE_HOLD);
-	intakeFold.set_gearing(E_MOTOR_GEAR_100);
-	
-	cataSensor.set_position(0);
-
-	//calibrate cata
-	//cata.calibrate();
-	//cata.load();
+	Task t(print_debug);
 }
 
 void disabled() {}
 
 void competition_initialize() {
-	folded = true;
-
+	/*
 	//add the autons to the selector
 	selector.add("Right Side AWP", "Push in preload", "score blue+hang");
+	bool updateScreen = false;
+
+	master.clear();
 
 	//Allow the user to select an auton
 	while(true) {
-		selector.display_autons(); //update screen
+		if(updateScreen) {
+			selector.display_autons(); //update screen
+			updateScreen = false;
+		}
 
-		if(master.get_digital_new_press(E_CONTROLLER_DIGITAL_UP))
+		if(master.get_digital_new_press(E_CONTROLLER_DIGITAL_UP)) {
 			selector.iterate();
+			updateScreen = true;
+		}
 
-		delay(15);
+		delay(10);
   	}
+	*/
+
+	//calibrate imu (blocking)
+	master.clear();
+	delay(60);
+	master.set_text(0, 0, "Calibrating...");
+	delay(60);
+
+	imu.reset();
+	static_imu.reset();
+	delay(3000);
+	imu.tare_rotation();
+	static_imu.tare();
+
+	master.clear();
+	delay(60);
+	master.set_text(0, 0, "Armed");
 }
 
 void autonomous() {
-	//unfold then start auton
-	intakeFold.tare_position();
-
-	if(folded) {
-		//unfold
-		while((intakeFold.get_positions()[0] + intakeFold.get_positions()[1]) / 2 < 420) {
-			intakeFold.move(127);
-			delay(10);
-		}
-
-		folded = false;
-		intakeFold.brake();
-	}
-
-	//run auton based off of what the user selected
-	switch(selector.getSelected()) {
-		case 0:
+	if(SKILLS)
+		run_skills();
+	else {
+		if(KYLE_AUTON)
+			runRightAwpAuton_Kyle(); //TODO: MAKE AN AUTON SELECTOR
+		else
 			runRightAwpAuton();
-			break;
 	}
 }
 
 void opcontrol() {
-	cata.calibrate();
-	Task r {[=] {
-		cata.load();
-	}};
-
-	bool wingsDeployed = false;
+	bool frontWingsDeployed = false;
+	bool backWingsDeployed = false;
+	rightMotors.set_brake_modes(E_MOTOR_BRAKE_COAST);
+	leftMotors.set_brake_modes(E_MOTOR_BRAKE_COAST);
 
 	while(true) {
 		//driving
-		double leftMove = master.get_analog(E_CONTROLLER_ANALOG_LEFT_Y);
-		double rightMove = master.get_analog(E_CONTROLLER_ANALOG_RIGHT_Y);
-		driveChassis.DriveTank(leftMove, rightMove);
+		if(KYLE_DRIVING) {
+			double leftAmount = master.get_analog(E_CONTROLLER_ANALOG_LEFT_Y);
+			double rightAmount = master.get_analog(E_CONTROLLER_ANALOG_RIGHT_Y);
+			driveChassis.DriveTank(leftAmount, rightAmount);
+		}
+		else {
+			double driveAmount = master.get_analog(E_CONTROLLER_ANALOG_LEFT_Y);
+			double turnAmount = master.get_analog(E_CONTROLLER_ANALOG_RIGHT_X)/1.5;
+			driveChassis.DriveArcade(driveAmount, turnAmount); 
+		}
 
 		//intake
 		if(master.get_digital(E_CONTROLLER_DIGITAL_R1))
@@ -126,32 +121,24 @@ void opcontrol() {
 		else
 			IntakeMotor.brake();
 
-		//cata
-		if(master.get_digital_new_press(E_CONTROLLER_DIGITAL_X)) {
-			std::cout << "X button pressed" << std::endl;
-			Task f {[=] {
-				cata.fire();
-			}};
+		//wings
+		if(master.get_digital_new_press(E_CONTROLLER_DIGITAL_L1)) {
+			frontWingsDeployed = !frontWingsDeployed;
+			frontWings.set_value(frontWingsDeployed);
+		}
+		if(master.get_digital_new_press(E_CONTROLLER_DIGITAL_L2)) {
+			backWingsDeployed = !backWingsDeployed;
+			backWings.set_value(backWingsDeployed);
 		}
 
-		if(master.get_digital_new_press(E_CONTROLLER_DIGITAL_B)) {
-			Task f {[=] {
-				cata.load();
-			}};
-		}
+		//climber
+		if(master.get_digital(E_CONTROLLER_DIGITAL_UP))
+			climbMotor.move(-127);
+		else if(master.get_digital(E_CONTROLLER_DIGITAL_DOWN))
+			climbMotor.move(127);
+		else
+			climbMotor.brake();
 
-		//temporary manual override
-		if(master.get_digital(E_CONTROLLER_DIGITAL_Y)) {
-			cata.stop = true; //stops any while loop that's currently running in the cata
-			cata_motors.move(127);
-		}
-		else if(!cata.firing)
-			cata_motors.brake();
-
-		if(master.get_digital_new_press(E_CONTROLLER_DIGITAL_A)) {
-			wingsDeployed = !wingsDeployed;
-			wings.set_value(wingsDeployed);
-		}
 
 		delay(10);
 	}
